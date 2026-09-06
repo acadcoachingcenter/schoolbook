@@ -64,13 +64,18 @@ export async function embedAndUpsertChunks(env: Env, chunks: IngestChunk[], meta
 
   for (let i = 0; i < chunks.length; i += EMBED_BATCH_SIZE) {
     const batch = chunks.slice(i, i + EMBED_BATCH_SIZE);
-    const result = (await env.AI.run(EMBEDDING_MODEL, { text: batch.map((c) => c.text) })) as {
-      data: number[][];
-    };
+
+    let result: { data: number[][] };
+    try {
+      result = (await env.AI.run(EMBEDDING_MODEL, { text: batch.map((c) => c.text) })) as { data: number[][] };
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : String(err);
+      throw new Error(`Embedding step (batch starting at chunk ${i}) failed: ${detail}`);
+    }
 
     const vectors = batch.map((chunk, j) => ({
       id: `${subjectSlug}-${chapterSlug}-p${chunk.page}-${i + j}`,
-      values: result.data[j],
+      values: Array.from(result.data[j]),
       metadata: {
         subject: meta.subject,
         chapter: meta.chapter,
@@ -80,7 +85,12 @@ export async function embedAndUpsertChunks(env: Env, chunks: IngestChunk[], meta
       }
     }));
 
-    await env.VECTORIZE.upsert(vectors);
+    try {
+      await env.VECTORIZE.upsert(vectors);
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : String(err);
+      throw new Error(`Vectorize upsert step (batch starting at chunk ${i}) failed: ${detail}`);
+    }
     total += vectors.length;
   }
 
