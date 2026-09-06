@@ -1,5 +1,6 @@
 name = "schoolbook"
 compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "dist"
 
 [ai]
@@ -21,6 +22,8 @@ id = "932d37901243485eb5c876448efe0f37"
 [[r2_buckets]]
 binding = "SOURCE_PDFS"
 bucket_name = "schoolbook-source-pdfs"
+
+
 
 # Secrets (set via the Cloudflare dashboard, never committed):
 #   GROQ_API_KEY
