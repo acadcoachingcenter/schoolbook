@@ -1,5 +1,312 @@
 [
   {
+    "id": "class-6",
+    "name": "Mathematics",
+    "className": "Class 6",
+    "chapters": [
+      { "id": "knowing-our-numbers", "name": "Knowing Our Numbers", "book": "Mathematics" },
+      { "id": "whole-numbers", "name": "Whole Numbers", "book": "Mathematics" },
+      { "id": "playing-with-numbers", "name": "Playing with Numbers", "book": "Mathematics" },
+      { "id": "basic-geometrical-ideas", "name": "Basic Geometrical Ideas", "book": "Mathematics" },
+      { "id": "understanding-elementary-shapes", "name": "Understanding Elementary Shapes", "book": "Mathematics" },
+      { "id": "integers", "name": "Integers", "book": "Mathematics" },
+      { "id": "fractions", "name": "Fractions", "book": "Mathematics" },
+      { "id": "decimals", "name": "Decimals", "book": "Mathematics" },
+      { "id": "data-handling-6", "name": "Data Handling", "book": "Mathematics" },
+      { "id": "mensuration-6", "name": "Mensuration", "book": "Mathematics" },
+      { "id": "algebra-6", "name": "Algebra", "book": "Mathematics" },
+      { "id": "ratio-and-proportion", "name": "Ratio and Proportion", "book": "Mathematics" },
+      { "id": "symmetry-6", "name": "Symmetry", "book": "Mathematics" }
+    ]
+  },
+  {
+    "id": "class-6-science",
+    "name": "Science",
+    "className": "Class 6",
+    "chapters": [
+      { "id": "food-where-does-it-come-from", "name": "Food: Where Does It Come From?", "book": "Science" },
+      { "id": "components-of-food", "name": "Components of Food", "book": "Science" },
+      { "id": "fibre-to-fabric-6", "name": "Fibre to Fabric", "book": "Science" },
+      { "id": "sorting-materials-into-groups", "name": "Sorting Materials into Groups", "book": "Science" },
+      { "id": "separation-of-substances", "name": "Separation of Substances", "book": "Science" },
+      { "id": "changes-around-us", "name": "Changes Around Us", "book": "Science" },
+      { "id": "getting-to-know-plants", "name": "Getting to Know Plants", "book": "Science" },
+      { "id": "body-movements", "name": "Body Movements", "book": "Science" },
+      { "id": "living-organisms-characteristics-and-habitats", "name": "The Living Organisms — Characteristics and Habitats", "book": "Science" },
+      { "id": "motion-and-measurement-of-distances", "name": "Motion and Measurement of Distances", "book": "Science" },
+      { "id": "light-shadows-and-reflections-6", "name": "Light, Shadows and Reflections", "book": "Science" },
+      { "id": "electricity-and-circuits", "name": "Electricity and Circuits", "book": "Science" },
+      { "id": "fun-with-magnets", "name": "Fun with Magnets", "book": "Science" },
+      { "id": "water-6", "name": "Water", "book": "Science" },
+      { "id": "air-around-us", "name": "Air Around Us", "book": "Science" },
+      { "id": "garbage-in-garbage-out", "name": "Garbage In, Garbage Out", "book": "Science" }
+    ]
+  },
+  {
+    "id": "class-6-social-science",
+    "name": "Social Science",
+    "className": "Class 6",
+    "chapters": [
+      { "id": "what-where-how-and-when", "name": "What, Where, How and When?", "book": "Our Pasts I (History)" },
+      { "id": "hunting-gathering-to-growing-food", "name": "From Hunting-Gathering to Growing Food", "book": "Our Pasts I (History)" },
+      { "id": "geography-earth-our-habitat", "name": "The Earth in the Solar System", "book": "The Earth Our Habitat (Geography)" },
+      { "id": "understanding-diversity", "name": "Understanding Diversity", "book": "Social and Political Life I (Civics)" }
+    ]
+  },
+  {
+    "id": "class-7-maths",
+    "name": "Mathematics",
+    "className": "Class 7",
+    "chapters": [
+      { "id": "integers-7", "name": "Integers", "book": "Mathematics" },
+      { "id": "fractions-and-decimals", "name": "Fractions and Decimals", "book": "Mathematics" },
+      { "id": "data-handling-7", "name": "Data Handling", "book": "Mathematics" },
+      { "id": "simple-equations", "name": "Simple Equations", "book": "Mathematics" },
+      { "id": "lines-and-angles", "name": "Lines and Angles", "book": "Mathematics" },
+      { "id": "triangles-and-its-properties", "name": "The Triangle and Its Properties", "book": "Mathematics" },
+      { "id": "congruence-of-triangles", "name": "Congruence of Triangles", "book": "Mathematics" },
+      { "id": "comparing-quantities", "name": "Comparing Quantities", "book": "Mathematics" },
+      { "id": "rational-numbers-7", "name": "Rational Numbers", "book": "Mathematics" },
+      { "id": "practical-geometry-7", "name": "Practical Geometry", "book": "Mathematics" },
+      { "id": "perimeter-and-area", "name": "Perimeter and Area", "book": "Mathematics" },
+      { "id": "algebraic-expressions-7", "name": "Algebraic Expressions", "book": "Mathematics" },
+      { "id": "exponents-and-powers", "name": "Exponents and Powers", "book": "Mathematics" },
+      { "id": "symmetry-7", "name": "Symmetry", "book": "Mathematics" },
+      { "id": "visualising-solid-shapes", "name": "Visualising Solid Shapes", "book": "Mathematics" }
+    ]
+  },
+  {
+    "id": "class-7-science",
+    "name": "Science",
+    "className": "Class 7",
+    "chapters": [
+      { "id": "nutrition-in-plants", "name": "Nutrition in Plants", "book": "Science" },
+      { "id": "nutrition-in-animals", "name": "Nutrition in Animals", "book": "Science" },
+      { "id": "fibre-to-fabric-7", "name": "Fibre to Fabric", "book": "Science" },
+      { "id": "heat-7", "name": "Heat", "book": "Science" },
+      { "id": "acids-bases-and-salts-7", "name": "Acids, Bases and Salts", "book": "Science" },
+      { "id": "physical-and-chemical-changes", "name": "Physical and Chemical Changes", "book": "Science" },
+      { "id": "weather-climate-and-adaptation", "name": "Weather, Climate and Adaptations of Animals to Climate", "book": "Science" },
+      { "id": "wind-storm-and-cyclone", "name": "Wind, Storm and Cyclone", "book": "Science" },
+      { "id": "soil-7", "name": "Soil", "book": "Science" },
+      { "id": "respiration-in-organisms", "name": "Respiration in Organisms", "book": "Science" },
+      { "id": "transportation-in-animals-and-plants", "name": "Transportation in Animals and Plants", "book": "Science" },
+      { "id": "reproduction-in-plants-7", "name": "Reproduction in Plants", "book": "Science" },
+      { "id": "motion-and-time", "name": "Motion and Time", "book": "Science" }
+    ]
+  },
+  {
+    "id": "class-8-maths",
+    "name": "Mathematics",
+    "className": "Class 8",
+    "chapters": [
+      { "id": "rational-numbers-8", "name": "Rational Numbers", "book": "Mathematics" },
+      { "id": "linear-equations-in-one-variable", "name": "Linear Equations in One Variable", "book": "Mathematics" },
+      { "id": "understanding-quadrilaterals", "name": "Understanding Quadrilaterals", "book": "Mathematics" },
+      { "id": "practical-geometry-8", "name": "Practical Geometry", "book": "Mathematics" },
+      { "id": "data-handling-8", "name": "Data Handling", "book": "Mathematics" },
+      { "id": "squares-and-square-roots", "name": "Squares and Square Roots", "book": "Mathematics" },
+      { "id": "cubes-and-cube-roots", "name": "Cubes and Cube Roots", "book": "Mathematics" },
+      { "id": "comparing-quantities-8", "name": "Comparing Quantities", "book": "Mathematics" },
+      { "id": "algebraic-expressions-and-identities", "name": "Algebraic Expressions and Identities", "book": "Mathematics" },
+      { "id": "mensuration-8", "name": "Mensuration", "book": "Mathematics" },
+      { "id": "exponents-and-powers-8", "name": "Exponents and Powers", "book": "Mathematics" },
+      { "id": "direct-and-inverse-proportions", "name": "Direct and Inverse Proportions", "book": "Mathematics" }
+    ]
+  },
+  {
+    "id": "class-8-science",
+    "name": "Science",
+    "className": "Class 8",
+    "chapters": [
+      { "id": "crop-production-and-management", "name": "Crop Production and Management", "book": "Science" },
+      { "id": "microorganisms-friend-and-foe", "name": "Microorganisms: Friend and Foe", "book": "Science" },
+      { "id": "synthetic-fibres-and-plastics", "name": "Synthetic Fibres and Plastics", "book": "Science" },
+      { "id": "materials-metals-and-non-metals", "name": "Materials: Metals and Non-Metals", "book": "Science" },
+      { "id": "coal-and-petroleum", "name": "Coal and Petroleum", "book": "Science" },
+      { "id": "combustion-and-flame", "name": "Combustion and Flame", "book": "Science" },
+      { "id": "conservation-of-plants-and-animals", "name": "Conservation of Plants and Animals", "book": "Science" },
+      { "id": "cell-structure-and-functions", "name": "Cell Structure and Functions", "book": "Science" },
+      { "id": "reproduction-in-animals", "name": "Reproduction in Animals", "book": "Science" },
+      { "id": "reaching-the-age-of-adolescence", "name": "Reaching the Age of Adolescence", "book": "Science" },
+      { "id": "force-and-pressure", "name": "Force and Pressure", "book": "Science" },
+      { "id": "friction", "name": "Friction", "book": "Science" },
+      { "id": "sound-8", "name": "Sound", "book": "Science" },
+      { "id": "chemical-effects-of-electric-current", "name": "Chemical Effects of Electric Current", "book": "Science" },
+      { "id": "some-natural-phenomena", "name": "Some Natural Phenomena", "book": "Science" },
+      { "id": "light-8", "name": "Light", "book": "Science" },
+      { "id": "stars-and-the-solar-system", "name": "Stars and the Solar System", "book": "Science" },
+      { "id": "pollution-of-air-and-water", "name": "Pollution of Air and Water", "book": "Science" }
+    ]
+  },
+  {
+    "id": "class-9-science",
+    "name": "Science",
+    "className": "Class 9",
+    "chapters": [
+      { "id": "matter-in-our-surroundings", "name": "Matter in Our Surroundings", "book": "Science" },
+      { "id": "is-matter-around-us-pure", "name": "Is Matter Around Us Pure?", "book": "Science" },
+      { "id": "atoms-and-molecules", "name": "Atoms and Molecules", "book": "Science" },
+      { "id": "structure-of-the-atom", "name": "Structure of the Atom", "book": "Science" },
+      { "id": "fundamental-unit-of-life", "name": "The Fundamental Unit of Life", "book": "Science" },
+      { "id": "tissues", "name": "Tissues", "book": "Science" },
+      { "id": "diversity-in-living-organisms", "name": "Diversity in Living Organisms", "book": "Science" },
+      { "id": "motion-9", "name": "Motion", "book": "Science" },
+      { "id": "force-and-laws-of-motion", "name": "Force and Laws of Motion", "book": "Science" },
+      { "id": "gravitation", "name": "Gravitation", "book": "Science" },
+      { "id": "work-and-energy", "name": "Work and Energy", "book": "Science" },
+      { "id": "sound-9", "name": "Sound", "book": "Science" },
+      { "id": "why-do-we-fall-ill", "name": "Why Do We Fall Ill?", "book": "Science" },
+      { "id": "natural-resources-9", "name": "Natural Resources", "book": "Science" },
+      { "id": "improvement-in-food-resources", "name": "Improvement in Food Resources", "book": "Science" }
+    ]
+  },
+  {
+    "id": "class-9-maths",
+    "name": "Mathematics",
+    "className": "Class 9",
+    "chapters": [
+      { "id": "number-systems-9", "name": "Number Systems", "book": "Mathematics" },
+      { "id": "polynomials-9", "name": "Polynomials", "book": "Mathematics" },
+      { "id": "coordinate-geometry-9", "name": "Coordinate Geometry", "book": "Mathematics" },
+      { "id": "linear-equations-in-two-variables", "name": "Linear Equations in Two Variables", "book": "Mathematics" },
+      { "id": "introduction-to-euclids-geometry", "name": "Introduction to Euclid's Geometry", "book": "Mathematics" },
+      { "id": "lines-and-angles-9", "name": "Lines and Angles", "book": "Mathematics" },
+      { "id": "triangles-9", "name": "Triangles", "book": "Mathematics" },
+      { "id": "quadrilaterals-9", "name": "Quadrilaterals", "book": "Mathematics" },
+      { "id": "areas-of-parallelograms-and-triangles", "name": "Areas of Parallelograms and Triangles", "book": "Mathematics" },
+      { "id": "circles-9", "name": "Circles", "book": "Mathematics" },
+      { "id": "constructions-9", "name": "Constructions", "book": "Mathematics" },
+      { "id": "herons-formula", "name": "Heron's Formula", "book": "Mathematics" },
+      { "id": "surface-areas-and-volumes-9", "name": "Surface Areas and Volumes", "book": "Mathematics" },
+      { "id": "statistics-9", "name": "Statistics", "book": "Mathematics" },
+      { "id": "probability-9", "name": "Probability", "book": "Mathematics" }
+    ]
+  },
+  {
+    "id": "class-9-social-science",
+    "name": "Social Science",
+    "className": "Class 9",
+    "chapters": [
+      { "id": "french-revolution", "name": "The French Revolution", "book": "India and the Contemporary World I (History)" },
+      { "id": "russian-revolution", "name": "Socialism in Europe and the Russian Revolution", "book": "India and the Contemporary World I (History)" },
+      { "id": "india-size-and-location", "name": "India — Size and Location", "book": "Contemporary India I (Geography)" },
+      { "id": "physical-features-of-india", "name": "Physical Features of India", "book": "Contemporary India I (Geography)" },
+      { "id": "democracy-in-the-contemporary-world", "name": "What Is Democracy? Why Democracy?", "book": "Democratic Politics I (Civics)" },
+      { "id": "poverty-as-a-challenge", "name": "Poverty as a Challenge", "book": "Economics" }
+    ]
+  },
+  {
+    "id": "class-10-science",
+    "name": "Science",
+    "className": "Class 10",
+    "chapters": [
+      { "id": "chemical-reactions-and-equations-10", "name": "Chemical Reactions and Equations", "book": "Science" },
+      { "id": "acids-bases-and-salts-10", "name": "Acids, Bases and Salts", "book": "Science" },
+      { "id": "metals-and-non-metals", "name": "Metals and Non-metals", "book": "Science" },
+      { "id": "carbon-and-its-compounds", "name": "Carbon and Its Compounds", "book": "Science" },
+      { "id": "life-processes-10", "name": "Life Processes", "book": "Science" },
+      { "id": "control-and-coordination", "name": "Control and Coordination", "book": "Science" },
+      { "id": "how-do-organisms-reproduce", "name": "How Do Organisms Reproduce?", "book": "Science" },
+      { "id": "heredity-and-evolution", "name": "Heredity and Evolution", "book": "Science" },
+      { "id": "light-reflection-and-refraction", "name": "Light — Reflection and Refraction", "book": "Science" },
+      { "id": "human-eye-and-colourful-world", "name": "The Human Eye and the Colourful World", "book": "Science" },
+      { "id": "electricity-10", "name": "Electricity", "book": "Science" },
+      { "id": "magnetic-effects-of-electric-current", "name": "Magnetic Effects of Electric Current", "book": "Science" },
+      { "id": "our-environment-10", "name": "Our Environment", "book": "Science" }
+    ]
+  },
+  {
+    "id": "class-10-maths",
+    "name": "Mathematics",
+    "className": "Class 10",
+    "chapters": [
+      { "id": "real-numbers-10", "name": "Real Numbers", "book": "Mathematics" },
+      { "id": "polynomials-10", "name": "Polynomials", "book": "Mathematics" },
+      { "id": "pair-of-linear-equations", "name": "Pair of Linear Equations in Two Variables", "book": "Mathematics" },
+      { "id": "quadratic-equations-10", "name": "Quadratic Equations", "book": "Mathematics" },
+      { "id": "arithmetic-progressions", "name": "Arithmetic Progressions", "book": "Mathematics" },
+      { "id": "triangles-10", "name": "Triangles", "book": "Mathematics" },
+      { "id": "coordinate-geometry-10", "name": "Coordinate Geometry", "book": "Mathematics" },
+      { "id": "introduction-to-trigonometry", "name": "Introduction to Trigonometry", "book": "Mathematics" },
+      { "id": "applications-of-trigonometry", "name": "Some Applications of Trigonometry", "book": "Mathematics" },
+      { "id": "circles-10", "name": "Circles", "book": "Mathematics" },
+      { "id": "areas-related-to-circles", "name": "Areas Related to Circles", "book": "Mathematics" },
+      { "id": "surface-areas-and-volumes-10", "name": "Surface Areas and Volumes", "book": "Mathematics" },
+      { "id": "statistics-10", "name": "Statistics", "book": "Mathematics" },
+      { "id": "probability-10", "name": "Probability", "book": "Mathematics" }
+    ]
+  },
+  {
+    "id": "class-10-social-science",
+    "name": "Social Science",
+    "className": "Class 10",
+    "chapters": [
+      { "id": "rise-of-nationalism-in-europe", "name": "The Rise of Nationalism in Europe", "book": "India and the Contemporary World II (History)" },
+      { "id": "nationalism-in-india", "name": "Nationalism in India", "book": "India and the Contemporary World II (History)" },
+      { "id": "resources-and-development", "name": "Resources and Development", "book": "Contemporary India II (Geography)" },
+      { "id": "power-sharing", "name": "Power Sharing", "book": "Democratic Politics II (Civics)" },
+      { "id": "development-10", "name": "Development", "book": "Economics" }
+    ]
+  },
+  {
+    "id": "class-11-physics",
+    "name": "Physics",
+    "className": "Class 11",
+    "chapters": [
+      { "id": "physical-world", "name": "Physical World", "book": "NCERT Class 11 Physics Part 1" },
+      { "id": "units-and-measurement", "name": "Units and Measurement", "book": "NCERT Class 11 Physics Part 1" },
+      { "id": "motion-in-a-straight-line", "name": "Motion in a Straight Line", "book": "NCERT Class 11 Physics Part 1" },
+      { "id": "motion-in-a-plane", "name": "Motion in a Plane", "book": "NCERT Class 11 Physics Part 1" },
+      { "id": "laws-of-motion", "name": "Laws of Motion", "book": "NCERT Class 11 Physics Part 1" },
+      { "id": "work-energy-and-power", "name": "Work, Energy and Power", "book": "NCERT Class 11 Physics Part 1" },
+      { "id": "gravitation-11", "name": "Gravitation", "book": "NCERT Class 11 Physics Part 2" },
+      { "id": "thermal-properties-of-matter", "name": "Thermal Properties of Matter", "book": "NCERT Class 11 Physics Part 2" },
+      { "id": "thermodynamics-11", "name": "Thermodynamics", "book": "NCERT Class 11 Physics Part 2" },
+      { "id": "waves", "name": "Waves", "book": "NCERT Class 11 Physics Part 2" }
+    ]
+  },
+  {
+    "id": "class-11-chemistry",
+    "name": "Chemistry",
+    "className": "Class 11",
+    "chapters": [
+      { "id": "some-basic-concepts-of-chemistry", "name": "Some Basic Concepts of Chemistry", "book": "NCERT Class 11 Chemistry Part 1" },
+      { "id": "structure-of-atom", "name": "Structure of Atom", "book": "NCERT Class 11 Chemistry Part 1" },
+      { "id": "classification-of-elements", "name": "Classification of Elements and Periodicity in Properties", "book": "NCERT Class 11 Chemistry Part 1" },
+      { "id": "chemical-bonding-and-molecular-structure", "name": "Chemical Bonding and Molecular Structure", "book": "NCERT Class 11 Chemistry Part 1" },
+      { "id": "equilibrium", "name": "Equilibrium", "book": "NCERT Class 11 Chemistry Part 2" },
+      { "id": "organic-chemistry-basic-principles", "name": "Organic Chemistry — Some Basic Principles and Techniques", "book": "NCERT Class 11 Chemistry Part 2" }
+    ]
+  },
+  {
+    "id": "class-11-biology",
+    "name": "Biology",
+    "className": "Class 11",
+    "chapters": [
+      { "id": "the-living-world", "name": "The Living World", "book": "Biology" },
+      { "id": "biological-classification", "name": "Biological Classification", "book": "Biology" },
+      { "id": "plant-kingdom", "name": "Plant Kingdom", "book": "Biology" },
+      { "id": "cell-the-unit-of-life", "name": "Cell — The Unit of Life", "book": "Biology" },
+      { "id": "photosynthesis-in-higher-plants", "name": "Photosynthesis in Higher Plants", "book": "Biology" },
+      { "id": "human-physiology-digestion", "name": "Digestion and Absorption", "book": "Biology" }
+    ]
+  },
+  {
+    "id": "class-11-maths",
+    "name": "Mathematics",
+    "className": "Class 11",
+    "chapters": [
+      { "id": "sets", "name": "Sets", "book": "Mathematics" },
+      { "id": "relations-and-functions-11", "name": "Relations and Functions", "book": "Mathematics" },
+      { "id": "trigonometric-functions", "name": "Trigonometric Functions", "book": "Mathematics" },
+      { "id": "complex-numbers-and-quadratic-equations", "name": "Complex Numbers and Quadratic Equations", "book": "Mathematics" },
+      { "id": "permutations-and-combinations", "name": "Permutations and Combinations", "book": "Mathematics" },
+      { "id": "straight-lines", "name": "Straight Lines", "book": "Mathematics" },
+      { "id": "limits-and-derivatives", "name": "Limits and Derivatives", "book": "Mathematics" }
+    ]
+  },
+  {
     "id": "class-12-physics",
     "name": "Physics",
     "className": "Class 12",
@@ -8,30 +315,99 @@
       { "id": "electrostatic-potential-and-capacitance", "name": "Electrostatic Potential and Capacitance", "book": "NCERT Class 12 Physics Part 1" },
       { "id": "current-electricity", "name": "Current Electricity", "book": "NCERT Class 12 Physics Part 1" },
       { "id": "moving-charges-and-magnetism", "name": "Moving Charges and Magnetism", "book": "NCERT Class 12 Physics Part 1" },
+      { "id": "magnetism-and-matter", "name": "Magnetism and Matter", "book": "NCERT Class 12 Physics Part 1" },
       { "id": "electromagnetic-induction", "name": "Electromagnetic Induction", "book": "NCERT Class 12 Physics Part 2" },
       { "id": "alternating-current", "name": "Alternating Current", "book": "NCERT Class 12 Physics Part 2" },
-      { "id": "ray-optics-and-optical-instruments", "name": "Ray Optics and Optical Instruments", "book": "NCERT Class 12 Physics Part 2" }
+      { "id": "electromagnetic-waves", "name": "Electromagnetic Waves", "book": "NCERT Class 12 Physics Part 2" },
+      { "id": "ray-optics-and-optical-instruments", "name": "Ray Optics and Optical Instruments", "book": "NCERT Class 12 Physics Part 2" },
+      { "id": "wave-optics", "name": "Wave Optics", "book": "NCERT Class 12 Physics Part 2" },
+      { "id": "dual-nature-of-radiation-and-matter", "name": "Dual Nature of Radiation and Matter", "book": "NCERT Class 12 Physics Part 2" },
+      { "id": "atoms", "name": "Atoms", "book": "NCERT Class 12 Physics Part 2" },
+      { "id": "nuclei", "name": "Nuclei", "book": "NCERT Class 12 Physics Part 2" },
+      { "id": "semiconductor-electronics", "name": "Semiconductor Electronics", "book": "NCERT Class 12 Physics Part 2" }
     ]
   },
   {
-    "id": "class-10-science",
-    "name": "Science",
-    "className": "Class 10",
+    "id": "class-12-chemistry",
+    "name": "Chemistry",
+    "className": "Class 12",
     "chapters": [
-      { "id": "chemical-reactions-and-equations", "name": "Chemical Reactions and Equations", "book": "Science" },
-      { "id": "acids-bases-and-salts", "name": "Acids, Bases and Salts", "book": "Science" },
-      { "id": "life-processes", "name": "Life Processes", "book": "Science" },
-      { "id": "electricity", "name": "Electricity", "book": "Science" }
+      { "id": "solutions", "name": "Solutions", "book": "NCERT Class 12 Chemistry Part 1" },
+      { "id": "electrochemistry", "name": "Electrochemistry", "book": "NCERT Class 12 Chemistry Part 1" },
+      { "id": "chemical-kinetics", "name": "Chemical Kinetics", "book": "NCERT Class 12 Chemistry Part 1" },
+      { "id": "d-and-f-block-elements", "name": "The d- and f-Block Elements", "book": "NCERT Class 12 Chemistry Part 1" },
+      { "id": "coordination-compounds", "name": "Coordination Compounds", "book": "NCERT Class 12 Chemistry Part 1" },
+      { "id": "haloalkanes-and-haloarenes", "name": "Haloalkanes and Haloarenes", "book": "NCERT Class 12 Chemistry Part 2" },
+      { "id": "alcohols-phenols-and-ethers", "name": "Alcohols, Phenols and Ethers", "book": "NCERT Class 12 Chemistry Part 2" },
+      { "id": "biomolecules", "name": "Biomolecules", "book": "NCERT Class 12 Chemistry Part 2" }
     ]
   },
   {
-    "id": "class-11-english",
+    "id": "class-12-biology",
+    "name": "Biology",
+    "className": "Class 12",
+    "chapters": [
+      { "id": "sexual-reproduction-in-flowering-plants", "name": "Sexual Reproduction in Flowering Plants", "book": "Biology" },
+      { "id": "human-reproduction", "name": "Human Reproduction", "book": "Biology" },
+      { "id": "principles-of-inheritance-and-variation", "name": "Principles of Inheritance and Variation", "book": "Biology" },
+      { "id": "molecular-basis-of-inheritance", "name": "Molecular Basis of Inheritance", "book": "Biology" },
+      { "id": "evolution", "name": "Evolution", "book": "Biology" },
+      { "id": "biotechnology-principles-and-processes", "name": "Biotechnology — Principles and Processes", "book": "Biology" }
+    ]
+  },
+  {
+    "id": "class-12-maths",
+    "name": "Mathematics",
+    "className": "Class 12",
+    "chapters": [
+      { "id": "relations-and-functions-12", "name": "Relations and Functions", "book": "NCERT Class 12 Mathematics Part 1" },
+      { "id": "inverse-trigonometric-functions", "name": "Inverse Trigonometric Functions", "book": "NCERT Class 12 Mathematics Part 1" },
+      { "id": "matrices", "name": "Matrices", "book": "NCERT Class 12 Mathematics Part 1" },
+      { "id": "determinants", "name": "Determinants", "book": "NCERT Class 12 Mathematics Part 1" },
+      { "id": "continuity-and-differentiability", "name": "Continuity and Differentiability", "book": "NCERT Class 12 Mathematics Part 1" },
+      { "id": "integrals", "name": "Integrals", "book": "NCERT Class 12 Mathematics Part 2" },
+      { "id": "differential-equations", "name": "Differential Equations", "book": "NCERT Class 12 Mathematics Part 2" },
+      { "id": "probability-12", "name": "Probability", "book": "NCERT Class 12 Mathematics Part 2" }
+    ]
+  },
+  {
+    "id": "english-secondary",
     "name": "English",
-    "className": "Class 11",
+    "className": "Classes 9-10",
     "chapters": [
-      { "id": "hornbill-ch1", "name": "The Portrait of a Lady", "book": "Hornbill" },
-      { "id": "hornbill-ch2", "name": "We're Not Afraid to Die... if We Can All Be Together", "book": "Hornbill" },
-      { "id": "hornbill-ch3", "name": "Discovering Tut: the Saga Continues", "book": "Hornbill" }
+      { "id": "first-flight-anne-frank", "name": "From the Diary of Anne Frank", "book": "First Flight (Class 10)" },
+      { "id": "first-flight-hundred-dresses", "name": "The Hundred Dresses", "book": "First Flight (Class 10)" },
+      { "id": "first-flight-glimpses-of-india", "name": "Glimpses of India", "book": "First Flight (Class 10)" },
+      { "id": "beehive-fun-they-had", "name": "The Fun They Had", "book": "Beehive (Class 9)" },
+      { "id": "beehive-sound-of-music", "name": "The Sound of Music", "book": "Beehive (Class 9)" }
+    ]
+  },
+  {
+    "id": "english-senior-secondary",
+    "name": "English",
+    "className": "Classes 11-12",
+    "chapters": [
+      { "id": "hornbill-portrait-of-a-lady", "name": "The Portrait of a Lady", "book": "Hornbill (Class 11)" },
+      { "id": "hornbill-we-are-not-afraid-to-die", "name": "We're Not Afraid to Die... If We Can All Be Together", "book": "Hornbill (Class 11)" },
+      { "id": "flamingo-last-lesson", "name": "The Last Lesson", "book": "Flamingo (Class 12)" },
+      { "id": "flamingo-lost-spring", "name": "Lost Spring", "book": "Flamingo (Class 12)" },
+      { "id": "vistas-third-level", "name": "The Third Level", "book": "Vistas (Class 12)" }
+    ]
+  },
+  {
+    "id": "hindi-placeholder",
+    "name": "Hindi",
+    "className": "Classes 6-12",
+    "chapters": [
+      { "id": "hindi-not-yet-populated", "name": "Chapters not yet added — see note below", "book": "Varies by class (Vasant/Kshitij/Sparsh/Aroh/Vitan etc.)" }
+    ]
+  },
+  {
+    "id": "tamil-placeholder",
+    "name": "Tamil",
+    "className": "Classes 6-12",
+    "chapters": [
+      { "id": "tamil-not-ncert", "name": "Chapters not yet added — Tamil is a Tamil Nadu state board (Samacheer Kalvi) subject, not published by NCERT", "book": "Tamil Nadu State Board" }
     ]
   }
 ]

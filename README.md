@@ -147,9 +147,18 @@ this answer?" panel listing the NCERT sources used.
 
 ## Remaining limitations / production checklist
 
-- [ ] `data/subjects.json` currently contains placeholder Physics/Science/
-      English chapters carried over from the audited repo — replace with
-      ACAD's actual Class 6–12 subject/chapter list.
+- [ ] `data/subjects.json` now has real NCERT chapter data for Classes 6–12
+      (Maths/Science/Social Science/English/Physics/Chemistry/Biology),
+      sourced from NCERT's own textbook structure. Two caveats:
+      **NCERT is mid-transition** to new NCF-2023 books for Classes 6–8
+      (`Ganita Prakash`, `Curiosity`, `Exploring Society`) — this file uses
+      the older, still-widely-taught chapter structure; update it once
+      you've confirmed which edition your students actually use. **Hindi
+      and Tamil are placeholders** — Hindi's NCERT book names vary
+      significantly by class/board, and Tamil is a Tamil Nadu state board
+      (Samacheer Kalvi) subject that NCERT doesn't publish at all, so
+      neither could be sourced the same way; fill both in from your own
+      curriculum before relying on subject-filtered search for them.
 - [ ] Rate limiting is not yet implemented at the Worker level — add a
       Cloudflare Rate Limiting rule on `/api/*` before public launch.
 - [ ] No automated test suite is included yet; `tools/offline/evaluate.py`
