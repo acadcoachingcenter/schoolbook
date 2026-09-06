@@ -93,8 +93,10 @@ export async function generateAnswer(
     })
   });
 
-  if (!res.ok) {
-    throw new Error("The tutor could not complete this response. Try again.");
+    if (!res.ok) {
+    // TEMPORARY: surface the real Groq error instead of a generic message, for diagnosis.
+    const body = await res.text().catch(() => "");
+    throw new Error(`Groq request failed (${res.status} ${res.statusText}): ${body.slice(0, 500)}`);
   }
 
   const data = (await res.json()) as { choices: { message: { content: string } }[] };

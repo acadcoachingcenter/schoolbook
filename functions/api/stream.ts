@@ -64,8 +64,15 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
     return errorResponse("The tutor could not complete this response. Try again.", 502, origin);
   }
 
-  if (!upstream.ok || !upstream.body) {
-    return errorResponse("The tutor could not complete this response. Try again.", 502, origin);
+    if (!upstream.ok || !upstream.body) {
+    // TEMPORARY: surface the real Groq error instead of a generic message, for diagnosis.
+    const body = upstream.body ? await upstream.text().catch(() => "") : "";
+    console.error("stream.ts upstream not ok:", upstream.status, upstream.statusText, body);
+    return errorResponse(
+      `The tutor could not complete this response. Groq returned ${upstream.status} ${upstream.statusText}: ${body.slice(0, 400)}`,
+      502,
+      origin
+    );
   }
 
   // Re-shape Groq's OpenAI-compatible SSE chunks into our simpler { type, value } protocol,
