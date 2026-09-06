@@ -2,7 +2,11 @@ import type { Env } from "../_lib/env";
 import { jsonResponse, errorResponse } from "../_lib/env";
 import subjectsData from "../../data/subjects.json";
 
-const CACHE_KEY = "subjects:v1";
+// Bump this whenever data/subjects.json changes so stale KV cache entries
+// are never served — a fixed key here previously caused updated curriculum
+// data to stay invisible for up to 24h after deploy.
+const CACHE_KEY = "subjects:v3";
+const CACHE_TTL_SECONDS = 60 * 60; // 1h — short enough that curriculum edits show up promptly
 
 export const onRequestGet: PagesFunction<Env> = async ({ env, request }) => {
   const origin = request.headers.get("Origin");
@@ -13,7 +17,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ env, request }) => {
     if (cached) return jsonResponse(cached, { status: 200 }, origin);
 
     if (env.CACHE) {
-      await env.CACHE.put(CACHE_KEY, JSON.stringify(subjectsData), { expirationTtl: 60 * 60 * 24 });
+      await env.CACHE.put(CACHE_KEY, JSON.stringify(subjectsData), { expirationTtl: CACHE_TTL_SECONDS });
     }
     return jsonResponse(subjectsData, { status: 200 }, origin);
   } catch {
