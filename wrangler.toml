@@ -1,0 +1,31 @@
+name = "schoolbook"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "dist"
+
+# Workers AI binding — used for query-embedding generation (bge-base-en-v1.5, 768-dim)
+[ai]
+binding = "AI"
+
+# Vectorize index binding — stores NCERT chunk embeddings + metadata
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "schoolbook-ncert"
+
+# D1 — used for bounded conversation memory (optional, see /functions/_lib/memory.ts)
+[[d1_databases]]
+binding = "DB"
+database_name = "schoolbook-db"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+# KV — caches subject/chapter metadata to avoid re-reading data/*.json on every request
+[[kv_namespaces]]
+binding = "CACHE"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+# Secrets (set via `wrangler pages secret put <NAME>` or the Cloudflare dashboard —
+# never commit real values, never expose to the React bundle):
+#   GROQ_API_KEY
+#   GROQ_MODEL          (e.g. "llama-3.1-8b-instant")
+
+# Custom domain: schoolbooks.acadapp.in is attached to this Pages project
+# from the Cloudflare dashboard (Pages project -> Custom domains), see README.md.

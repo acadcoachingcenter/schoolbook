@@ -1,0 +1,111 @@
+.composer {
+  margin: 8px 0 28px;
+}
+
+.composer-box {
+  background: var(--paper-raised);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-md);
+  padding: 14px 16px 10px;
+}
+
+.composer-box textarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  resize: vertical;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--ink);
+  outline: none;
+  min-height: 64px;
+}
+
+.composer-box textarea::placeholder {
+  color: #7b7460;
+}
+
+.composer-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid var(--rule);
+}
+
+.composer-count {
+  font-size: 0.78rem;
+  color: #8a8368;
+}
+
+.composer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-soft);
+  padding: 6px;
+  border-radius: 999px;
+  cursor: not-allowed;
+  display: flex;
+}
+
+.send-btn,
+.stop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.send-btn {
+  background: var(--ink);
+  color: var(--ink-on-dark);
+}
+
+.send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.stop-btn {
+  background: var(--margin-red);
+  color: white;
+}
+
+.composer-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.chip {
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.chip:hover:not(:disabled) {
+  border-color: var(--chalk-green);
+  color: var(--chalk-green);
+}
+
+.chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

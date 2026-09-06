@@ -1,0 +1,11 @@
+node_modules
+dist
+.wrangler
+.env
+.env.local
+*.log
+.DS_Store
+/tools/offline/vector_db*
+/tools/offline/*.pdf
+/source-material/*.pdf
+/source-material/*.csv

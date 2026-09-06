@@ -1,0 +1,37 @@
+[
+  {
+    "id": "class-12-physics",
+    "name": "Physics",
+    "className": "Class 12",
+    "chapters": [
+      { "id": "electric-charges-and-fields", "name": "Electric Charges and Fields", "book": "NCERT Class 12 Physics Part 1" },
+      { "id": "electrostatic-potential-and-capacitance", "name": "Electrostatic Potential and Capacitance", "book": "NCERT Class 12 Physics Part 1" },
+      { "id": "current-electricity", "name": "Current Electricity", "book": "NCERT Class 12 Physics Part 1" },
+      { "id": "moving-charges-and-magnetism", "name": "Moving Charges and Magnetism", "book": "NCERT Class 12 Physics Part 1" },
+      { "id": "electromagnetic-induction", "name": "Electromagnetic Induction", "book": "NCERT Class 12 Physics Part 2" },
+      { "id": "alternating-current", "name": "Alternating Current", "book": "NCERT Class 12 Physics Part 2" },
+      { "id": "ray-optics-and-optical-instruments", "name": "Ray Optics and Optical Instruments", "book": "NCERT Class 12 Physics Part 2" }
+    ]
+  },
+  {
+    "id": "class-10-science",
+    "name": "Science",
+    "className": "Class 10",
+    "chapters": [
+      { "id": "chemical-reactions-and-equations", "name": "Chemical Reactions and Equations", "book": "Science" },
+      { "id": "acids-bases-and-salts", "name": "Acids, Bases and Salts", "book": "Science" },
+      { "id": "life-processes", "name": "Life Processes", "book": "Science" },
+      { "id": "electricity", "name": "Electricity", "book": "Science" }
+    ]
+  },
+  {
+    "id": "class-11-english",
+    "name": "English",
+    "className": "Class 11",
+    "chapters": [
+      { "id": "hornbill-ch1", "name": "The Portrait of a Lady", "book": "Hornbill" },
+      { "id": "hornbill-ch2", "name": "We're Not Afraid to Die... if We Can All Be Together", "book": "Hornbill" },
+      { "id": "hornbill-ch3", "name": "Discovering Tut: the Saga Continues", "book": "Hornbill" }
+    ]
+  }
+]

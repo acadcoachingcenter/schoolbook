@@ -1,0 +1,37 @@
+{
+  "name": "schoolbook",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "SchoolBook — AI NCERT Learning Companion. Vite + React + TypeScript frontend, Cloudflare Pages Functions API, Vectorize RAG.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "pages:dev": "wrangler pages dev dist --compatibility-date=2024-09-23",
+    "pages:deploy": "npm run build && wrangler pages deploy dist --project-name=schoolbook",
+    "vectorize:create": "wrangler vectorize create schoolbook-ncert --dimensions=768 --metric=cosine",
+    "migrate:vectors": "tsx scripts/migration/migrate-vector-data.ts",
+    "lint": "tsc --noEmit && tsc -p scripts/tsconfig.json"
+  },
+  "dependencies": {
+    "lucide-react": "^0.441.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^9.0.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240925.0",
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "better-sqlite3": "^11.3.0",
+    "dotenv": "^16.4.5",
+    "pdf-parse": "^1.1.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2",
+    "wrangler": "^3.78.0"
+  }
+}

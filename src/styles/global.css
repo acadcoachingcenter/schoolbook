@@ -1,0 +1,130 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap");
+
+:root {
+  --ink: #1e2749;
+  --ink-soft: #3a4570;
+  --paper: #efe7d2;
+  --paper-raised: #f7f2e4;
+  --rule: #c9c0a4;
+  --margin-red: #a5382c;
+  --margin-red-soft: #c65142;
+  --chalk-green: #2f5233;
+  --chalk-green-soft: #4a7a52;
+  --ink-on-dark: #f2ede0;
+
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  --max-line: 68ch;
+  color-scheme: light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  margin: 0 0 0.4em;
+  line-height: 1.15;
+}
+
+p {
+  max-width: var(--max-line);
+}
+
+a {
+  color: var(--margin-red);
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+:focus-visible {
+  outline: 2px solid var(--chalk-green);
+  outline-offset: 2px;
+}
+
+/* Ruled-notebook texture: horizontal rule lines + a red margin line down the left.
+   Grounded directly in the subject (school exercise books), applied once, on the
+   page shell only — not repeated as decoration on every card. */
+.notebook-page {
+  position: relative;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 31px,
+    var(--rule) 31px,
+    var(--rule) 32px
+  );
+  background-position: 0 96px;
+}
+
+.notebook-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 72px;
+  width: 1px;
+  background: var(--margin-red-soft);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .notebook-page::before {
+    left: 28px;
+  }
+}
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.empty-state {
+  color: #8a8368;
+  font-style: italic;
+  padding: 20px 0 60px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

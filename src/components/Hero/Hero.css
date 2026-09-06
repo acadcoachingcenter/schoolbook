@@ -1,0 +1,29 @@
+.hero {
+  padding: 64px 0 40px;
+  max-width: 720px;
+}
+
+.hero-kicker {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--margin-red);
+  font-weight: 600;
+  margin: 0 0 18px;
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  letter-spacing: -0.01em;
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  margin-top: 18px;
+}
+
+@media (max-width: 720px) {
+  .hero {
+    padding: 40px 0 24px;
+  }
+}
