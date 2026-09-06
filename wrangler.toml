@@ -2,37 +2,27 @@ name = "schoolbook"
 compatibility_date = "2024-09-23"
 pages_build_output_dir = "dist"
 
-# Workers AI binding — used for query-embedding generation (bge-base-en-v1.5, 768-dim)
 [ai]
 binding = "AI"
 
-# Vectorize index binding — stores NCERT chunk embeddings + metadata
 [[vectorize]]
 binding = "VECTORIZE"
 index_name = "schoolbook-ncert"
 
-# D1 — used for bounded conversation memory (optional, see /functions/_lib/memory.ts)
 [[d1_databases]]
 binding = "DB"
 database_name = "schoolbook-db"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "aea5ee36-e34a-46f5-be60-7720a67f556f"
 
-# KV — caches subject/chapter metadata to avoid re-reading data/*.json on every request
 [[kv_namespaces]]
 binding = "CACHE"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "932d37901243485eb5c876448efe0f37"
 
-# R2 — stores original uploaded PDFs from /admin for audit/re-processing (optional but recommended)
 [[r2_buckets]]
 binding = "SOURCE_PDFS"
 bucket_name = "schoolbook-source-pdfs"
 
-# Secrets (set via `wrangler pages secret put <NAME>` or the Cloudflare dashboard —
-# never commit real values, never expose to the React bundle):
+# Secrets (set via the Cloudflare dashboard, never committed):
 #   GROQ_API_KEY
-#   GROQ_MODEL          (e.g. "llama-3.1-8b-instant")
-#   ADMIN_INGEST_KEY    (a long random string — required to use the /admin upload page;
-#                        without it set, /api/admin/ingest refuses all requests)
-
-# Custom domain: schoolbooks.acadapp.in is attached to this Pages project
-# from the Cloudflare dashboard (Pages project -> Custom domains), see README.md.
+#   GROQ_MODEL
+#   ADMIN_INGEST_KEY
