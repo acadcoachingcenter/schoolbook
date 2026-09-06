@@ -101,8 +101,9 @@ export const onRequestPost: PagesFunction<IngestEnv> = async ({ request, env }) 
     const count = await embedAndUpsertChunks(env, chunks, { subject, chapter, book });
 
     return jsonResponse({ subject, chapter, book, chunks: count }, { status: 200 }, origin);
-  } catch (err) {
+    } catch (err) {
     console.error("admin/ingest.ts error:", err);
-    return errorResponse("Failed to process this PDF. Check the server logs for details.", 500, origin);
+    const detail = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
+    return errorResponse(`Failed to process this PDF. ${detail}`, 500, origin);
   }
 };
