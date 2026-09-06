@@ -4,10 +4,14 @@ import { buildSystemPrompt, buildUserPrompt, summarizeConversation } from "./pro
 
 export const EMBEDDING_MODEL = "@cf/baai/bge-base-en-v1.5"; // 768-dim, matches wrangler vectorize create
 const TOP_K = 6;
-const MIN_SCORE = 0.55; // below this we treat retrieval as "not found" rather than force-feeding weak matches
+// bge-base is an asymmetric retrieval model: scores against passages run measurably
+// lower without this instruction prefix on the query side (passages are embedded plain).
+// See BAAI's bge model card. Getting this wrong silently tanks every similarity score.
+const QUERY_INSTRUCTION = "Represent this sentence for searching relevant passages: ";
+const MIN_SCORE = 0.35; // loosened from an earlier over-strict 0.55 that filtered out genuine matches
 
 export async function embedQuery(env: Env, text: string): Promise<number[]> {
-  const result = (await env.AI.run(EMBEDDING_MODEL, { text: [text] })) as { data: number[][] };
+  const result = (await env.AI.run(EMBEDDING_MODEL, { text: [QUERY_INSTRUCTION + text] })) as { data: number[][] };
   return result.data[0];
 }
 
