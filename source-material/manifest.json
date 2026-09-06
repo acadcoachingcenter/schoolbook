@@ -1,14 +1,16 @@
 [
-  {
-    "file": "NCERT-Class-12-Physics-Part-1.pdf",
-    "subject": "Physics",
-    "chapter": "class-12-physics-part-1",
-    "book": "NCERT Class 12 Physics Part 1"
-  },
-  {
-    "file": "NCERT-Class-12-Physics-Part-2.pdf",
-    "subject": "Physics",
-    "chapter": "class-12-physics-part-2",
-    "book": "NCERT Class 12 Physics Part 2"
-  }
+  { "file": "leph101.pdf", "subject": "Physics", "chapter": "electric-charges-and-fields", "book": "NCERT Class 12 Physics Part 1" },
+  { "file": "leph102.pdf", "subject": "Physics", "chapter": "electrostatic-potential-and-capacitance", "book": "NCERT Class 12 Physics Part 1" },
+  { "file": "leph103.pdf", "subject": "Physics", "chapter": "current-electricity", "book": "NCERT Class 12 Physics Part 1" },
+  { "file": "leph104.pdf", "subject": "Physics", "chapter": "moving-charges-and-magnetism", "book": "NCERT Class 12 Physics Part 1" },
+  { "file": "leph105.pdf", "subject": "Physics", "chapter": "magnetism-and-matter", "book": "NCERT Class 12 Physics Part 1" },
+  { "file": "leph106.pdf", "subject": "Physics", "chapter": "electromagnetic-induction", "book": "NCERT Class 12 Physics Part 1" },
+  { "file": "leph107.pdf", "subject": "Physics", "chapter": "alternating-current", "book": "NCERT Class 12 Physics Part 1" },
+  { "file": "leph108.pdf", "subject": "Physics", "chapter": "electromagnetic-waves", "book": "NCERT Class 12 Physics Part 1" },
+  { "file": "leph201.pdf", "subject": "Physics", "chapter": "ray-optics-and-optical-instruments", "book": "NCERT Class 12 Physics Part 2" },
+  { "file": "leph202.pdf", "subject": "Physics", "chapter": "wave-optics", "book": "NCERT Class 12 Physics Part 2" },
+  { "file": "leph203.pdf", "subject": "Physics", "chapter": "dual-nature-of-radiation-and-matter", "book": "NCERT Class 12 Physics Part 2" },
+  { "file": "leph204.pdf", "subject": "Physics", "chapter": "atoms", "book": "NCERT Class 12 Physics Part 2" },
+  { "file": "leph205.pdf", "subject": "Physics", "chapter": "nuclei", "book": "NCERT Class 12 Physics Part 2" },
+  { "file": "leph206.pdf", "subject": "Physics", "chapter": "semiconductor-electronics", "book": "NCERT Class 12 Physics Part 2" }
 ]
