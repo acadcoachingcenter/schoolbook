@@ -11,16 +11,14 @@ binding = "AI"
 binding = "VECTORIZE"
 index_name = "schoolbook-ncert"
 
-# D1 — used for bounded conversation memory (optional, see /functions/_lib/memory.ts)
 [[d1_databases]]
 binding = "DB"
 database_name = "schoolbook-db"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "aea5ee36-e34a-46f5-be60-7720a67f556f"
 
-# KV — caches subject/chapter metadata to avoid re-reading data/*.json on every request
 [[kv_namespaces]]
 binding = "CACHE"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "932d37901243485eb5c876448efe0f37"
 
 # Secrets (set via `wrangler pages secret put <NAME>` or the Cloudflare dashboard —
 # never commit real values, never expose to the React bundle):
