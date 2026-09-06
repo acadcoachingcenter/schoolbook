@@ -21,8 +21,12 @@
 import "dotenv/config";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 // @ts-expect-error — pdf-parse has no bundled types
 import pdfParse from "pdf-parse";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 interface ManifestEntry {
   file: string;
