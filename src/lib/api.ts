@@ -1,4 +1,4 @@
-import type { AskRequest, HealthResponse, Subject, TutorResponse } from "../types";
+import type { AskRequest, ConversationMessage, HealthResponse, Subject, TutorResponse } from "../types";
 
 async function jsonOrThrow<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -22,6 +22,13 @@ export async function checkHealth(): Promise<HealthResponse> {
 export async function fetchSubjects(): Promise<Subject[]> {
   const res = await fetch("/api/subjects");
   return jsonOrThrow<Subject[]>(res);
+}
+
+/** Restores a session's recent conversation after a page refresh. */
+export async function fetchConversation(sessionId: string): Promise<ConversationMessage[]> {
+  const res = await fetch(`/api/conversation?sessionId=${encodeURIComponent(sessionId)}`);
+  const data = await jsonOrThrow<{ messages: ConversationMessage[] }>(res);
+  return data.messages;
 }
 
 /** Non-streaming ask — used as a fallback and for the "quiz-me" structured mode. */

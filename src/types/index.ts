@@ -16,6 +16,9 @@ export interface AskRequest {
   mode?: LearningMode;
   subject?: string;
   chapter?: string;
+  /** Client-generated opaque id (see src/lib/session.ts) used to persist/restore bounded history in D1. */
+  sessionId?: string;
+  /** Optional client-side history, used only as a fallback if sessionId/D1 lookup is unavailable. */
   conversation?: ConversationMessage[];
 }
 

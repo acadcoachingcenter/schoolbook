@@ -83,7 +83,11 @@ and a real Vectorize index (below) even in dev.
    wrangler d1 create schoolbook-db
    wrangler kv namespace create CACHE
    ```
-   Copy the returned IDs into `wrangler.toml` (`database_id`, `id`).
+   Copy the returned IDs into `wrangler.toml` (`database_id`, `id`), then
+   apply the schema:
+   ```bash
+   npm run d1:migrate
+   ```
 3. **Set secrets** (never commit these, never prefix with `VITE_`):
    ```bash
    wrangler pages secret put GROQ_API_KEY --project-name=schoolbook
@@ -148,10 +152,11 @@ this answer?" panel listing the NCERT sources used.
       ACAD's actual Class 6–12 subject/chapter list.
 - [ ] Rate limiting is not yet implemented at the Worker level — add a
       Cloudflare Rate Limiting rule on `/api/*` before public launch.
-- [ ] Conversation memory currently lives only in browser state
-      (`useTutor.ts`); the D1 binding is wired but not yet used for
-      persistence — add if you want conversations to survive a refresh.
 - [ ] No automated test suite is included yet; `tools/offline/evaluate.py`
       covers retrieval/faithfulness spot-checks but isn't CI-wired.
 - [ ] Only Groq is wired as an LLM provider; swapping providers means
       editing `functions/_lib/rag.ts`'s two `fetch` calls.
+- [ ] Conversation history is anonymous, bucketed only by a browser-local
+      session id (`src/lib/session.ts`) with no expiry job yet — see the
+      housekeeping note at the bottom of `schema/schema.sql` for pruning
+      old rows once this is in real use.

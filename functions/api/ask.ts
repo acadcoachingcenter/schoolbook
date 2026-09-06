@@ -1,6 +1,7 @@
 import type { Env } from "../_lib/env";
 import { jsonResponse, errorResponse, validateQuestion } from "../_lib/env";
 import { retrieveContext, generateAnswer } from "../_lib/rag";
+import { getRecentHistory, appendTurn, isValidSessionId } from "../_lib/memory";
 import type { AskRequest, TutorResponse } from "../../src/types";
 
 export const onRequestOptions: PagesFunction<Env> = async ({ request }) => {
@@ -20,6 +21,9 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const validated = validateQuestion(body.question);
   if (!validated.ok) return errorResponse(validated.error, 400, origin);
 
+  const hasSession = isValidSessionId(body.sessionId);
+  const history = hasSession ? await getRecentHistory(env, body.sessionId as string) : body.conversation ?? [];
+
   try {
     const { sources, insufficientContext } = await retrieveContext(env, validated.value, {
       subject: body.subject,
@@ -36,7 +40,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       return jsonResponse(response, { status: 200 }, origin);
     }
 
-    const answer = await generateAnswer(env, validated.value, sources, body.mode, body.conversation);
+    const answer = await generateAnswer(env, validated.value, sources, body.mode, history);
+
+    if (hasSession) {
+      await appendTurn(env, body.sessionId as string, validated.value, answer, body.mode, body.subject, body.chapter);
+    }
 
     const response: TutorResponse = { answer, sources, mode: body.mode };
     return jsonResponse(response, { status: 200 }, origin);

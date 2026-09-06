@@ -8,7 +8,8 @@ import { useTutor } from "../hooks/useTutor";
 const MAX_QUESTION_LENGTH = 1200;
 
 export function Home() {
-  const { turns, ask, retry, stop, isStreaming, mode, setMode, subject, chapter, setFocus } = useTutor();
+  const { turns, ask, retry, stop, newConversation, isStreaming, mode, setMode, subject, chapter, setFocus } =
+    useTutor();
 
   return (
     <div className="notebook-page">
@@ -27,11 +28,16 @@ export function Home() {
             precisely.
           </p>
         ) : (
-          <section aria-live="polite">
-            {turns.map((turn, i) => (
-              <TutorResponse key={i} turn={turn} onRetry={() => retry(i)} />
-            ))}
-          </section>
+          <>
+            <section aria-live="polite">
+              {turns.map((turn, i) => (
+                <TutorResponse key={i} turn={turn} onRetry={() => retry(i)} />
+              ))}
+            </section>
+            <button className="new-conversation-btn" onClick={newConversation} disabled={isStreaming}>
+              Start a new conversation
+            </button>
+          </>
         )}
       </div>
     </div>

@@ -121,6 +121,27 @@ button {
   padding: 20px 0 60px;
 }
 
+.new-conversation-btn {
+  margin: 20px 0 60px;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.new-conversation-btn:hover:not(:disabled) {
+  border-color: var(--margin-red);
+  color: var(--margin-red);
+}
+
+.new-conversation-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;

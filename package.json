@@ -11,6 +11,7 @@
     "pages:dev": "wrangler pages dev dist --compatibility-date=2024-09-23",
     "pages:deploy": "npm run build && wrangler pages deploy dist --project-name=schoolbook",
     "vectorize:create": "wrangler vectorize create schoolbook-ncert --dimensions=768 --metric=cosine",
+    "d1:migrate": "wrangler d1 execute schoolbook-db --remote --file=./schema/schema.sql",
     "migrate:vectors": "tsx scripts/migration/migrate-vector-data.ts",
     "lint": "tsc --noEmit && tsc -p scripts/tsconfig.json"
   },
@@ -26,6 +27,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "better-sqlite3": "^11.3.0",
     "dotenv": "^16.4.5",
     "pdf-parse": "^1.1.1",
     "tsx": "^4.19.0",

@@ -1,9 +1,8 @@
-import { useCallback, useRef, useState } from "react";
-import { streamTutor } from "../lib/api";
-import type { ConversationMessage, LearningMode } from "../types";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { streamTutor, fetchConversation } from "../lib/api";
+import { getSessionId, resetSessionId } from "../lib/session";
+import type { LearningMode } from "../types";
 import type { TurnState } from "../components/TutorResponse/TutorResponse";
-
-const MAX_CONVERSATION_TURNS = 6;
 
 export function useTutor() {
   const [turns, setTurns] = useState<TurnState[]>([]);
@@ -12,7 +11,26 @@ export function useTutor() {
   const [chapter, setChapter] = useState<string | undefined>();
   const [isStreaming, setIsStreaming] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
-  const historyRef = useRef<ConversationMessage[]>([]);
+  const sessionIdRef = useRef<string>(getSessionId());
+
+  // Restore recent history from D1 on first load, so a refresh doesn't lose the conversation.
+  useEffect(() => {
+    fetchConversation(sessionIdRef.current)
+      .then((messages) => {
+        const restored: TurnState[] = [];
+        for (let i = 0; i < messages.length; i += 2) {
+          const question = messages[i];
+          const answer = messages[i + 1];
+          if (question?.role === "user" && answer?.role === "assistant") {
+            restored.push({ question: question.content, answer: answer.content, sources: [], status: "done" });
+          }
+        }
+        if (restored.length > 0) setTurns(restored);
+      })
+      .catch(() => {
+        // No history yet, or D1 unavailable — starting fresh is a fine fallback either way.
+      });
+  }, []);
 
   const ask = useCallback(
     async (question: string) => {
@@ -31,7 +49,7 @@ export function useTutor() {
             mode,
             subject,
             chapter,
-            conversation: historyRef.current.slice(-MAX_CONVERSATION_TURNS)
+            sessionId: sessionIdRef.current
           },
           (token) => {
             fullAnswer += token;
@@ -43,8 +61,6 @@ export function useTutor() {
           },
           controller.signal
         );
-
-        historyRef.current.push({ role: "user", content: question }, { role: "assistant", content: fullAnswer });
 
         setTurns((prev) => {
           const next = [...prev];
@@ -93,11 +109,17 @@ export function useTutor() {
     abortRef.current?.abort();
   }, []);
 
+  const newConversation = useCallback(() => {
+    sessionIdRef.current = resetSessionId();
+    setTurns([]);
+  }, []);
+
   return {
     turns,
     ask,
     retry,
     stop,
+    newConversation,
     isStreaming,
     mode,
     setMode,
