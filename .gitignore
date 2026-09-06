@@ -9,3 +9,5 @@ dist
 /tools/offline/*.pdf
 /source-material/*.pdf
 /source-material/*.csv
+
+tsconfig.tsbuildinfo
