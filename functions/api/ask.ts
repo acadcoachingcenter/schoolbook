@@ -25,14 +25,16 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const history = hasSession ? await getRecentHistory(env, body.sessionId as string) : body.conversation ?? [];
 
   try {
-    const { sources, insufficientContext } = await retrieveContext(env, validated.value, {
+    const { sources, insufficientContext, debugTopScores } = await retrieveContext(env, validated.value, {
       subject: body.subject,
       chapter: body.chapter
     });
 
     if (insufficientContext) {
       const response: TutorResponse = {
-        answer: "I couldn't find enough relevant NCERT material for that question. Try rephrasing it, or pick a subject/chapter from the navigation so I can search more precisely.",
+        answer:
+          "I couldn't find enough relevant NCERT material for that question. Try rephrasing it, or pick a subject/chapter from the navigation so I can search more precisely." +
+          `\n\n_[Temporary diagnostic — remove once tuned] Top raw scores: ${JSON.stringify(debugTopScores)}_`,
         sources: [],
         mode: body.mode,
         insufficientContext: true

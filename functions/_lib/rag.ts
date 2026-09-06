@@ -18,6 +18,9 @@ export async function embedQuery(env: Env, text: string): Promise<number[]> {
 export interface RetrievalResult {
   sources: RetrievedSource[];
   insufficientContext: boolean;
+  /** TEMPORARY diagnostic field — raw top match scores before the MIN_SCORE filter,
+   * so we can see real numbers instead of guessing at a threshold. Remove once tuned. */
+  debugTopScores?: number[];
 }
 
 export async function retrieveContext(
@@ -37,6 +40,8 @@ export async function retrieveContext(
     filter: Object.keys(vectorizeFilter).length ? vectorizeFilter : undefined
   });
 
+  const debugTopScores = matches.matches.map((m) => Number((m.score ?? 0).toFixed(3)));
+
   const relevant = matches.matches.filter((m) => (m.score ?? 0) >= MIN_SCORE);
 
   const sources: RetrievedSource[] = relevant.map((m) => {
@@ -52,7 +57,7 @@ export async function retrieveContext(
     };
   });
 
-  return { sources, insufficientContext: sources.length === 0 };
+  return { sources, insufficientContext: sources.length === 0, debugTopScores };
 }
 
 function buildGroqMessages(question: string, sources: RetrievedSource[], mode: AskRequest["mode"], conversation: AskRequest["conversation"]) {
