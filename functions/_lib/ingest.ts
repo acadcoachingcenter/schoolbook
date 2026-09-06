@@ -50,6 +50,11 @@ export interface IngestMetadata {
   subject: string;
   chapter: string;
   book: string;
+  /** Human-readable labels for display in the Source card — separate from the
+   * subject/chapter values above, which must match the IDs the Chapter Explorer
+   * filters by (e.g. "electric-charges-and-fields"), not display text. */
+  subjectName?: string;
+  chapterName?: string;
 }
 
 /**
@@ -79,6 +84,8 @@ export async function embedAndUpsertChunks(env: Env, chunks: IngestChunk[], meta
       metadata: {
         subject: meta.subject,
         chapter: meta.chapter,
+        subjectName: meta.subjectName ?? meta.subject,
+        chapterName: meta.chapterName ?? meta.chapter,
         book: meta.book,
         page: String(chunk.page),
         snippet: chunk.text

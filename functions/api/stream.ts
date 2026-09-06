@@ -24,7 +24,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
   const hasSession = isValidSessionId(body.sessionId);
   const history = hasSession ? await getRecentHistory(env, body.sessionId as string) : body.conversation ?? [];
 
-   let sources, insufficientContext, debugTopScores;
+  let sources, insufficientContext, debugTopScores;
   try {
     ({ sources, insufficientContext, debugTopScores } = await retrieveContext(env, validated.value, {
       subject: body.subject,
@@ -43,7 +43,6 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
         const msg =
           "I couldn't find enough relevant NCERT material for that question. Try rephrasing it, or pick a subject/chapter first." +
           `\n\n_[Temporary diagnostic — remove once tuned] Top raw scores: ${JSON.stringify(debugTopScores)}_`;
-
         controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "token", value: msg })}\n\n`));
         controller.enqueue(
           encoder.encode(`data: ${JSON.stringify({ type: "meta", sources: [], insufficientContext: true })}\n\n`)

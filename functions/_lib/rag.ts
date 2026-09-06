@@ -48,8 +48,8 @@ export async function retrieveContext(
     const meta = (m.metadata ?? {}) as Record<string, string>;
     return {
       id: m.id,
-      subject: meta.subject,
-      chapter: meta.chapter,
+      subject: meta.subjectName ?? meta.subject,
+      chapter: meta.chapterName ?? meta.chapter,
       page: meta.page,
       book: meta.book,
       snippet: (meta.snippet ?? "").slice(0, 900),

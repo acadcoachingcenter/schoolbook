@@ -40,8 +40,12 @@ export function Admin() {
     const chapter = selectedSubject.chapters.find((c) => c.id === chapterId);
     const form = new FormData();
     form.set("file", file);
-    form.set("subject", selectedSubject.name);
-    form.set("chapter", chapter?.name ?? chapterId);
+    // subject/chapter must be the IDs the Chapter Explorer filters by — NOT display
+    // names — or filtered searches on the main site will silently match nothing.
+    form.set("subject", selectedSubject.id);
+    form.set("chapter", chapterId);
+    form.set("subjectName", selectedSubject.name);
+    form.set("chapterName", chapter?.name ?? chapterId);
     form.set("book", book);
 
     try {

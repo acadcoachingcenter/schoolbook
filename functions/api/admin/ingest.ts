@@ -69,6 +69,8 @@ export const onRequestPost: PagesFunction<IngestEnv> = async ({ request, env }) 
   const subject = form.get("subject");
   const chapter = form.get("chapter");
   const book = form.get("book");
+  const subjectName = form.get("subjectName");
+  const chapterName = form.get("chapterName");
 
   if (!(file instanceof File)) return errorResponse("Missing 'file' (PDF upload).", 400, origin);
   if (typeof subject !== "string" || !subject.trim()) return errorResponse("Missing 'subject'.", 400, origin);
@@ -98,10 +100,16 @@ export const onRequestPost: PagesFunction<IngestEnv> = async ({ request, env }) 
       );
     }
 
-    const count = await embedAndUpsertChunks(env, chunks, { subject, chapter, book });
+    const count = await embedAndUpsertChunks(env, chunks, {
+      subject,
+      chapter,
+      book,
+      subjectName: typeof subjectName === "string" ? subjectName : undefined,
+      chapterName: typeof chapterName === "string" ? chapterName : undefined
+    });
 
     return jsonResponse({ subject, chapter, book, chunks: count }, { status: 200 }, origin);
-    } catch (err) {
+  } catch (err) {
     console.error("admin/ingest.ts error:", err);
     const detail = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
     return errorResponse(`Failed to process this PDF. ${detail}`, 500, origin);
