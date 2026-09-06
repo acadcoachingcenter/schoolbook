@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "postbuild": "node -e \"require('fs').copyFileSync('dist/index.html','dist/404.html')\" && wrangler pages functions build functions --outdir=dist --compatibility-date=2024-09-23 --compatibility-flag=nodejs_compat && node -e \"require('fs').renameSync('dist/index.js','dist/_worker.js')\"",
     "preview": "vite preview",
     "pages:dev": "wrangler pages dev dist --compatibility-date=2024-09-23",
     "pages:deploy": "npm run build && wrangler pages deploy dist --project-name=schoolbook",
