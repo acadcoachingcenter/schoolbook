@@ -86,7 +86,7 @@ export async function generateAnswer(
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      model: env.GROQ_MODEL || "llama-3.1-8b-instant",
+      model: env.GROQ_MODEL || "llama-3.3-70b-versatile",
       messages: buildGroqMessages(question, sources, mode, conversation),
       temperature: 0.3,
       max_tokens: 900
@@ -122,7 +122,7 @@ export async function generateAnswerStream(
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      model: env.GROQ_MODEL || "llama-3.1-8b-instant",
+      model: env.GROQ_MODEL || "llama-3.3-70b-versatile",
       messages: buildGroqMessages(question, sources, mode, conversation),
       temperature: 0.3,
       max_tokens: 900,
