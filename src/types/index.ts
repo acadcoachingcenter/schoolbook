@@ -52,6 +52,20 @@ export interface Chapter {
   book?: string;
 }
 
+/** A subject/chapter combination that actually has indexed content — read
+ * from the admin ingest registry, not a hand-maintained syllabus file, so it
+ * always reflects the real current NCERT chapters rather than going stale
+ * on syllabus revisions. */
+export interface AvailableChapter {
+  subjectId: string;
+  chapterId: string;
+  className: string;
+  subjectName: string;
+  chapterTitle: string;
+  book: string;
+  subtopics: string[];
+}
+
 export interface HealthResponse {
   status: "ok" | "degraded";
   service: string;

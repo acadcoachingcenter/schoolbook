@@ -1,4 +1,4 @@
-import type { AskRequest, ConversationMessage, HealthResponse, Subject, TutorResponse } from "../types";
+import type { AskRequest, ConversationMessage, HealthResponse, Subject, TutorResponse, AvailableChapter } from "../types";
 
 async function jsonOrThrow<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -22,6 +22,13 @@ export async function checkHealth(): Promise<HealthResponse> {
 export async function fetchSubjects(): Promise<Subject[]> {
   const res = await fetch("/api/subjects");
   return jsonOrThrow<Subject[]>(res);
+}
+
+/** Which subject/chapter combinations actually have indexed NCERT content. */
+export async function fetchAvailableChapters(): Promise<AvailableChapter[]> {
+  const res = await fetch("/api/available-chapters");
+  const data = await jsonOrThrow<{ available: AvailableChapter[] }>(res);
+  return data.available;
 }
 
 /** Restores a session's recent conversation after a page refresh. */

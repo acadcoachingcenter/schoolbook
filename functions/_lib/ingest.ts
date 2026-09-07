@@ -27,19 +27,30 @@ function chunkPageText(pageText: string, page: number): IngestChunk[] {
   return chunks;
 }
 
-/** Extracts text per page from a PDF ArrayBuffer/Uint8Array and chunks it with real page numbers. */
-export async function extractAndChunkPdf(pdfBytes: Uint8Array): Promise<IngestChunk[]> {
+/** Extracts raw per-page text (no chunking) — used both for chunking and for
+ * reading the chapter title/subtopics directly off the PDF's own pages. */
+export async function extractPdfPages(pdfBytes: Uint8Array): Promise<string[]> {
   const pdf = await getDocumentProxy(pdfBytes);
   const { text } = await extractText(pdf, { mergePages: false });
+  return text;
+}
 
+/** Chunks already-extracted per-page text, keeping real page numbers. */
+export function chunkPages(pages: string[]): IngestChunk[] {
   const chunks: IngestChunk[] = [];
-  text.forEach((pageText, i) => {
+  pages.forEach((pageText, i) => {
     chunks.push(...chunkPageText(pageText, i + 1));
   });
   return chunks;
 }
 
-function slug(value: string): string {
+/** Extracts text per page from a PDF ArrayBuffer/Uint8Array and chunks it with real page numbers. */
+export async function extractAndChunkPdf(pdfBytes: Uint8Array): Promise<IngestChunk[]> {
+  const pages = await extractPdfPages(pdfBytes);
+  return chunkPages(pages);
+}
+
+export function slug(value: string): string {
   return value
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")

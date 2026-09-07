@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { ChevronRight, X } from "lucide-react";
 import "./ChapterExplorer.css";
-import { fetchSubjects } from "../../lib/api";
-import type { Chapter, Subject } from "../../types";
+import { fetchAvailableChapters } from "../../lib/api";
+import type { AvailableChapter } from "../../types";
 
 interface Props {
   selectedSubject?: string;
@@ -10,22 +10,49 @@ interface Props {
   onSelect: (subject?: string, chapter?: string) => void;
 }
 
+interface SubjectGroup {
+  subjectId: string;
+  subjectName: string;
+  className: string;
+  chapters: AvailableChapter[];
+}
+
+function groupBySubject(chapters: AvailableChapter[]): SubjectGroup[] {
+  const groups = new Map<string, SubjectGroup>();
+  for (const chapter of chapters) {
+    const existing = groups.get(chapter.subjectId);
+    if (existing) {
+      existing.chapters.push(chapter);
+    } else {
+      groups.set(chapter.subjectId, {
+        subjectId: chapter.subjectId,
+        subjectName: chapter.subjectName,
+        className: chapter.className,
+        chapters: [chapter]
+      });
+    }
+  }
+  return Array.from(groups.values());
+}
+
 export function ChapterExplorer({ selectedSubject, selectedChapter, onSelect }: Props) {
-  const [subjects, setSubjects] = useState<Subject[] | null>(null);
+  const [chapters, setChapters] = useState<AvailableChapter[] | null>(null);
   const [openSubject, setOpenSubject] = useState<string | null>(selectedSubject ?? null);
 
   useEffect(() => {
-    fetchSubjects()
-      .then(setSubjects)
-      .catch(() => setSubjects([]));
+    fetchAvailableChapters()
+      .then(setChapters)
+      .catch(() => setChapters([]));
   }, []);
 
-  if (!subjects) return null;
-  if (subjects.length === 0) return null;
+  if (!chapters) return null;
+  if (chapters.length === 0) return null;
 
-  const activeChapterName =
+  const groups = groupBySubject(chapters);
+
+  const activeChapterTitle =
     selectedSubject &&
-    subjects.find((s) => s.id === selectedSubject)?.chapters.find((c: Chapter) => c.id === selectedChapter)?.name;
+    chapters.find((c) => c.subjectId === selectedSubject && c.chapterId === selectedChapter)?.chapterTitle;
 
   return (
     <div className="explorer">
@@ -38,26 +65,28 @@ export function ChapterExplorer({ selectedSubject, selectedChapter, onSelect }: 
         )}
       </div>
 
-      {selectedSubject && activeChapterName ? (
+      {selectedSubject && activeChapterTitle ? (
         <p className="explorer-active">
-          Searching within <strong>{activeChapterName}</strong>
+          Searching within <strong>{activeChapterTitle}</strong>
         </p>
       ) : (
         <ul className="explorer-list">
-          {subjects.map((subject) => (
-            <li key={subject.id}>
+          {groups.map((group) => (
+            <li key={group.subjectId}>
               <button
-                className={`explorer-subject ${openSubject === subject.id ? "explorer-subject--open" : ""}`}
-                onClick={() => setOpenSubject(openSubject === subject.id ? null : subject.id)}
+                className={`explorer-subject ${openSubject === group.subjectId ? "explorer-subject--open" : ""}`}
+                onClick={() => setOpenSubject(openSubject === group.subjectId ? null : group.subjectId)}
               >
                 <ChevronRight size={14} className="explorer-chevron" />
-                {subject.className} · {subject.name}
+                {group.className} · {group.subjectName}
               </button>
-              {openSubject === subject.id && (
+              {openSubject === group.subjectId && (
                 <ul className="explorer-chapters">
-                  {subject.chapters.map((chapter) => (
-                    <li key={chapter.id}>
-                      <button onClick={() => onSelect(subject.id, chapter.id)}>{chapter.name}</button>
+                  {group.chapters.map((chapter) => (
+                    <li key={chapter.chapterId}>
+                      <button onClick={() => onSelect(chapter.subjectId, chapter.chapterId)}>
+                        {chapter.chapterTitle}
+                      </button>
                     </li>
                   ))}
                 </ul>
