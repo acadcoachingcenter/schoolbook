@@ -58,10 +58,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
 
   let upstream: Response;
   try {
-    upstream = await generateAnswerStream(env, validated.value, sources, body.mode, history);
+        upstream = await generateAnswerStream(env, validated.value, sources, body.mode, history);
   } catch (err) {
+    // TEMPORARY: surface the real error instead of a generic message, for diagnosis.
+    const detail = err instanceof Error ? err.message : String(err);
     console.error("stream.ts generation error:", err);
-    return errorResponse("The tutor could not complete this response. Try again.", 502, origin);
+    return errorResponse(`The tutor could not complete this response. ${detail}`, 502, origin);
   }
 
     if (!upstream.ok || !upstream.body) {
