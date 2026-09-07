@@ -1,7 +1,4 @@
 .coverage-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
   background: var(--paper-raised);
   border: 1px solid var(--rule);
   border-radius: var(--radius-sm);
@@ -11,15 +8,46 @@
   color: var(--ink-soft);
 }
 
-.coverage-note svg {
+.coverage-note-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.coverage-note-summary svg {
   flex: 0 0 auto;
   margin-top: 2px;
   color: var(--chalk-green);
 }
 
-.coverage-note p {
+.coverage-note-summary p {
   margin: 0;
   max-width: none;
+  flex: 1;
+}
+
+.coverage-toggle {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.coverage-toggle:hover {
+  border-color: var(--chalk-green);
+  color: var(--chalk-green);
+}
+
+.coverage-chevron--open {
+  transform: rotate(180deg);
 }
 
 .coverage-note--empty {
@@ -30,4 +58,69 @@
   border-radius: var(--radius-sm);
   padding: 10px 14px;
   margin: 0 0 20px;
+}
+
+.coverage-table {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+}
+
+.coverage-table-subject {
+  margin-bottom: 14px;
+}
+
+.coverage-table-subject:last-child {
+  margin-bottom: 0;
+}
+
+.coverage-table-subject h4 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+
+.coverage-table-book {
+  margin: 0 0 8px 8px;
+}
+
+.coverage-table-book-label {
+  margin: 0 0 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #8a8368;
+}
+
+.coverage-table-book ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.coverage-table-book li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 0.86rem;
+}
+
+.coverage-done-icon {
+  flex: 0 0 auto;
+  color: var(--chalk-green);
+}
+
+.coverage-table-book li span:nth-child(2) {
+  flex: 1;
+}
+
+.coverage-done-tag {
+  flex: 0 0 auto;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--chalk-green);
+  background: #e8f0e8;
+  border-radius: 999px;
+  padding: 2px 8px;
 }
