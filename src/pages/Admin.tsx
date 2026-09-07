@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Admin.css";
 
 const KEY_STORAGE = "schoolbook:adminKey";
 const CLASSES = ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12"];
+const COOLDOWN_SECONDS = 20; // spaces out consecutive uploads to avoid tripping transient rate limits
 
 type Status =
   | { kind: "idle" }
@@ -18,10 +19,17 @@ export function Admin() {
   const [book, setBook] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setInterval(() => setCooldown((c) => Math.max(0, c - 1)), 1000);
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!file || !className || !subjectName.trim() || !adminKey.trim()) return;
+    if (!file || !className || !subjectName.trim() || !adminKey.trim() || cooldown > 0) return;
 
     sessionStorage.setItem(KEY_STORAGE, adminKey);
     setStatus({ kind: "working" });
@@ -54,8 +62,10 @@ export function Admin() {
       });
       setFile(null);
       setChapterTitleOverride("");
+      setCooldown(COOLDOWN_SECONDS);
     } catch (err) {
       setStatus({ kind: "error", message: (err as Error).message });
+      // No cooldown on failure — a genuine mistake (bad file, wrong field) shouldn't force a wait to fix and retry.
     }
   }
 
@@ -137,8 +147,8 @@ export function Admin() {
             />
           </label>
 
-          <button type="submit" disabled={status.kind === "working"}>
-            {status.kind === "working" ? "Indexing…" : "Upload and index"}
+          <button type="submit" disabled={status.kind === "working" || cooldown > 0}>
+            {status.kind === "working" ? "Indexing…" : cooldown > 0 ? `Wait ${cooldown}s…` : "Upload and index"}
           </button>
         </form>
 
