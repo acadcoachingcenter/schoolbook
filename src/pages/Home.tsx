@@ -3,6 +3,7 @@ import { LearningModes } from "../components/LearningModes/LearningModes";
 import { TutorComposer } from "../components/TutorComposer/TutorComposer";
 import { TutorResponse } from "../components/TutorResponse/TutorResponse";
 import { ChapterExplorer } from "../components/ChapterExplorer/ChapterExplorer";
+import { CoverageNote } from "../components/CoverageNote/CoverageNote";
 import { useTutor } from "../hooks/useTutor";
 
 const MAX_QUESTION_LENGTH = 1200;
@@ -15,6 +16,8 @@ export function Home() {
     <div className="notebook-page">
       <div className="container">
         <Hero />
+
+        <CoverageNote />
 
         <ChapterExplorer selectedSubject={subject} selectedChapter={chapter} onSelect={setFocus} />
 

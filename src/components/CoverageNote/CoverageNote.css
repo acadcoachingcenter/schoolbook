@@ -1,0 +1,33 @@
+.coverage-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin: 0 0 20px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.coverage-note svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--chalk-green);
+}
+
+.coverage-note p {
+  margin: 0;
+  max-width: none;
+}
+
+.coverage-note--empty {
+  display: block;
+  font-style: italic;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin: 0 0 20px;
+}
