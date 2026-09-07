@@ -11,7 +11,13 @@ export interface DetectedChapterInfo {
  * syllabus (exactly what happened with the source repo this app started from).
  */
 export function detectChapterInfo(pages: string[]): DetectedChapterInfo {
-  const firstPage = pages[0] ?? "";
+  // NCERT's 2026-27 reprint stamps every page with "Reprint 2026-27" and, on at
+  // least one real chapter, this runs on with no newline right after the chapter
+  // title (e.g. "CAPACITANCEReprint 2026-27"), which silently truncated the
+  // title. Strip it before anything else touches the text.
+  const stripFooter = (text: string) => text.replace(/Reprint\s*\d{4}-\d{2,4}/gi, "");
+
+  const firstPage = stripFooter(pages[0] ?? "");
   const lines = firstPage
     .split(/\r?\n/)
     .map((l) => l.trim())
@@ -52,9 +58,9 @@ export function detectChapterInfo(pages: string[]): DetectedChapterInfo {
   // Best-effort numbered subtopic headings, e.g. "2.1 Introduction" — supplementary
   // metadata only, not load-bearing, since heading extraction from dense PDF layouts
   // is inherently imperfect.
-  const subtopics = new Set<string>();
+    const subtopics = new Set<string>();
   for (const page of pages) {
-    for (const raw of page.split(/\r?\n/)) {
+    for (const raw of stripFooter(page).split(/\r?\n/)) {
       const line = raw.trim();
       const match = line.match(/^(\d{1,2}\.\d{1,2})\s+([A-Za-z][A-Za-z0-9 ,.'&-]{2,60})$/);
       if (match) subtopics.add(`${match[1]} ${match[2].trim()}`);
