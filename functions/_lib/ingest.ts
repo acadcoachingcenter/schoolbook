@@ -68,6 +68,24 @@ export interface IngestMetadata {
   chapterName?: string;
 }
 
+/** Retries a flaky async call a couple of times with a short backoff before giving up —
+ * absorbs the occasional transient Workers AI / Vectorize hiccup instead of failing
+ * the whole upload over a momentary blip. */
+async function withRetry<T>(fn: () => Promise<T>, attempts = 3, baseDelayMs = 500): Promise<T> {
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (attempt < attempts) {
+        await new Promise((resolve) => setTimeout(resolve, baseDelayMs * attempt));
+      }
+    }
+  }
+  throw lastErr;
+}
+
 /**
  * Embeds chunks in batches via Workers AI and upserts them into Vectorize.
  * Vector IDs are deterministic (subject-chapter-page-index), so re-ingesting
@@ -83,10 +101,12 @@ export async function embedAndUpsertChunks(env: Env, chunks: IngestChunk[], meta
 
     let result: { data: number[][] };
     try {
-      result = (await env.AI.run(EMBEDDING_MODEL, { text: batch.map((c) => c.text) })) as { data: number[][] };
+      result = await withRetry(
+        () => env.AI.run(EMBEDDING_MODEL, { text: batch.map((c) => c.text) }) as Promise<{ data: number[][] }>
+      );
     } catch (err) {
       const detail = err instanceof Error ? err.message : String(err);
-      throw new Error(`Embedding step (batch starting at chunk ${i}) failed: ${detail}`);
+      throw new Error(`Embedding step (batch starting at chunk ${i}) failed after retries: ${detail}`);
     }
 
     const vectors = batch.map((chunk, j) => ({
@@ -104,10 +124,10 @@ export async function embedAndUpsertChunks(env: Env, chunks: IngestChunk[], meta
     }));
 
     try {
-      await env.VECTORIZE.upsert(vectors);
+      await withRetry(() => env.VECTORIZE.upsert(vectors));
     } catch (err) {
       const detail = err instanceof Error ? err.message : String(err);
-      throw new Error(`Vectorize upsert step (batch starting at chunk ${i}) failed: ${detail}`);
+      throw new Error(`Vectorize upsert step (batch starting at chunk ${i}) failed after retries: ${detail}`);
     }
     total += vectors.length;
   }
