@@ -1,4 +1,7 @@
 import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 import { AlertCircle, BookOpenCheck, RotateCcw } from "lucide-react";
 import "./TutorResponse.css";
 import { SourceCard } from "../SourceCard/SourceCard";
@@ -29,7 +32,9 @@ export function TutorResponse({ turn, onRetry }: { turn: TurnState; onRetry: () 
         </div>
       ) : (
         <div className={`turn-answer ${turn.status === "streaming" ? "turn-answer--streaming" : ""}`}>
-          <ReactMarkdown>{turn.answer || " "}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+            {turn.answer || " "}
+          </ReactMarkdown>
           {turn.status === "streaming" && <span className="caret" aria-hidden="true" />}
         </div>
       )}
