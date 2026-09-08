@@ -37,3 +37,29 @@ export async function upsertAvailableChapter(env: Env, entry: AvailableChapter):
     console.error("upsertAvailableChapter failed:", err);
   }
 }
+
+/**
+ * Updates just the display title (chapterTitle) shown in the student-facing Chapter
+ * Explorer dropdown for an already-ingested chapter — subjectId, chapterId, and
+ * everything else about the entry stay exactly as they were. Returns false if no
+ * matching (subjectId, chapterId) entry exists yet.
+ */
+export async function renameAvailableChapter(
+  env: Env,
+  subjectId: string,
+  chapterId: string,
+  newTitle: string
+): Promise<boolean> {
+  if (!env.CACHE) return false;
+  try {
+    const current = await getAvailableChapters(env);
+    const idx = current.findIndex((c) => c.subjectId === subjectId && c.chapterId === chapterId);
+    if (idx < 0) return false;
+    current[idx] = { ...current[idx], chapterTitle: newTitle };
+    await env.CACHE.put(REGISTRY_KEY, JSON.stringify(current));
+    return true;
+  } catch (err) {
+    console.error("renameAvailableChapter failed:", err);
+    return false;
+  }
+}

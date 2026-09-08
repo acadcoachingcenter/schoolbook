@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Admin.css";
+import { fetchAvailableChapters } from "../lib/api";
+import type { AvailableChapter } from "../types";
 
 const KEY_STORAGE = "schoolbook:adminKey";
 const CLASSES = ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12"];
@@ -9,6 +11,12 @@ type Status =
   | { kind: "idle" }
   | { kind: "working" }
   | { kind: "done"; chapterTitle: string; subtopics: string[]; chunks: number }
+  | { kind: "error"; message: string };
+
+type RenameStatus =
+  | { kind: "idle" }
+  | { kind: "working" }
+  | { kind: "done"; warning?: string }
   | { kind: "error"; message: string };
 
 export function Admin() {
@@ -22,6 +30,21 @@ export function Admin() {
   const [cooldown, setCooldown] = useState(0);
   const [indexingStartedAt, setIndexingStartedAt] = useState<number | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+
+  const [chapters, setChapters] = useState<AvailableChapter[]>([]);
+  const [selectedChapterKey, setSelectedChapterKey] = useState("");
+  const [renameTitle, setRenameTitle] = useState("");
+  const [renameStatus, setRenameStatus] = useState<RenameStatus>({ kind: "idle" });
+
+  function loadChapters() {
+    fetchAvailableChapters()
+      .then(setChapters)
+      .catch(() => setChapters([]));
+  }
+
+  useEffect(() => {
+    loadChapters();
+  }, []);
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -80,10 +103,41 @@ export function Admin() {
       setChapterTitleOverride("");
       setCooldown(COOLDOWN_SECONDS);
       setIndexingStartedAt(null);
+      loadChapters();
     } catch (err) {
       setStatus({ kind: "error", message: (err as Error).message });
       setIndexingStartedAt(null);
       // No cooldown on failure — a genuine mistake (bad file, wrong field) shouldn't force a wait to fix and retry.
+    }
+  }
+
+  function handleSelectChapter(key: string) {
+    setSelectedChapterKey(key);
+    setRenameStatus({ kind: "idle" });
+    const found = chapters.find((c) => `${c.subjectId}::${c.chapterId}` === key);
+    setRenameTitle(found?.chapterTitle ?? "");
+  }
+
+  async function handleRename(e: React.FormEvent) {
+    e.preventDefault();
+    const found = chapters.find((c) => `${c.subjectId}::${c.chapterId}` === selectedChapterKey);
+    if (!found || !renameTitle.trim() || !adminKey.trim()) return;
+
+    sessionStorage.setItem(KEY_STORAGE, adminKey);
+    setRenameStatus({ kind: "working" });
+
+    try {
+      const res = await fetch("/api/admin/rename-chapter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Admin-Key": adminKey },
+        body: JSON.stringify({ subjectId: found.subjectId, chapterId: found.chapterId, newTitle: renameTitle.trim() })
+      });
+      const data = (await res.json()) as { chapterTitle?: string; warning?: string; error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Rename failed.");
+      setRenameStatus({ kind: "done", warning: data.warning });
+      loadChapters();
+    } catch (err) {
+      setRenameStatus({ kind: "error", message: (err as Error).message });
     }
   }
 
@@ -185,6 +239,51 @@ export function Admin() {
           </div>
         )}
         {status.kind === "error" && <p className="admin-status admin-status--error">{status.message}</p>}
+
+        <h2 className="admin-section-title">Rename an existing chapter</h2>
+        <p className="admin-sub">
+          Fixes the title students see when picking a chapter, and the title shown in "Why am I seeing this
+          answer?" source citations. Doesn't touch the PDF, subtopics, or chunk data — just the display title.
+        </p>
+
+        <form onSubmit={handleRename} className="admin-form">
+          <label>
+            Chapter
+            <select value={selectedChapterKey} onChange={(e) => handleSelectChapter(e.target.value)} required>
+              <option value="" disabled>
+                {chapters.length === 0 ? "No chapters indexed yet" : "Select a chapter"}
+              </option>
+              {chapters.map((c) => (
+                <option key={`${c.subjectId}::${c.chapterId}`} value={`${c.subjectId}::${c.chapterId}`}>
+                  {c.className} · {c.subjectName} — {c.chapterTitle}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            New title
+            <input
+              type="text"
+              value={renameTitle}
+              onChange={(e) => setRenameTitle(e.target.value)}
+              placeholder="Corrected chapter title"
+              required
+            />
+          </label>
+
+          <button type="submit" disabled={renameStatus.kind === "working" || !selectedChapterKey}>
+            {renameStatus.kind === "working" ? "Renaming…" : "Rename chapter"}
+          </button>
+        </form>
+
+        {renameStatus.kind === "done" && !renameStatus.warning && (
+          <p className="admin-status admin-status--ok">Chapter renamed everywhere.</p>
+        )}
+        {renameStatus.kind === "done" && renameStatus.warning && (
+          <p className="admin-status admin-status--warning">{renameStatus.warning}</p>
+        )}
+        {renameStatus.kind === "error" && <p className="admin-status admin-status--error">{renameStatus.message}</p>}
       </div>
     </div>
   );

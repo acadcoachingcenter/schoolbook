@@ -251,3 +251,68 @@ export async function embedAndUpsertChunks(env: Env, chunks: IngestChunk[], meta
 
   return total;
 }
+
+/**
+ * Re-tags every vector belonging to a chapter with a new display chapterName — the
+ * embedding values are never recomputed, only the metadata string changes. Vector IDs
+ * are deterministic from (subject, chapter, page, chunk index), so this works by
+ * re-deriving the exact same chunk list from the original PDF (kept in R2 at ingest
+ * time under `${subjectId}/${chapterId}.pdf`) and looking each resulting ID up via
+ * getByIds — it never guesses or invents IDs, so a rename can't accidentally touch
+ * another chapter's vectors.
+ *
+ * Requires the chapter's source PDF to still be present in R2. If it's missing (e.g.
+ * the R2 write silently failed at ingest time), this throws with a message telling
+ * the admin to re-upload the chapter instead — the caller decides how to surface that.
+ */
+export async function renameChapterVectors(
+  env: Env & { SOURCE_PDFS?: R2Bucket },
+  subjectId: string,
+  chapterId: string,
+  newChapterName: string
+): Promise<{ renamed: number }> {
+  if (!env.SOURCE_PDFS) {
+    throw new Error("No SOURCE_PDFS bucket configured on this deployment — cannot re-derive vector IDs to rename.");
+  }
+
+  const r2Key = `${subjectId}/${chapterId}.pdf`;
+  const object = await env.SOURCE_PDFS.get(r2Key);
+  if (!object) {
+    throw new Error(`Original PDF not found in R2 at "${r2Key}" — re-upload this chapter to update its source citations.`);
+  }
+
+  const bytes = new Uint8Array(await object.arrayBuffer());
+  const pages = await extractPdfPages(bytes);
+  const chunks = chunkPages(pages);
+  const ids = chunks.map((chunk, i) => `${subjectId}-${chapterId}-p${chunk.page}-${i}`);
+
+  let renamed = 0;
+  for (let i = 0; i < ids.length; i += EMBED_BATCH_SIZE) {
+    const idBatch = ids.slice(i, i + EMBED_BATCH_SIZE);
+
+    let existing: VectorizeVector[];
+    try {
+      existing = await withRetry(() => env.VECTORIZE.getByIds(idBatch));
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : String(err);
+      throw new Error(`Vectorize lookup failed (ids ${i}-${i + idBatch.length - 1}) after retries: ${detail}. ${renamed} chunks were already renamed before this failure.`);
+    }
+    if (existing.length === 0) continue;
+
+    const updated = existing.map((vec) => ({
+      id: vec.id,
+      values: vec.values,
+      metadata: { ...(vec.metadata ?? {}), chapterName: newChapterName }
+    }));
+
+    try {
+      await withRetry(() => env.VECTORIZE.upsert(updated));
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : String(err);
+      throw new Error(`Vectorize upsert failed (ids ${i}-${i + idBatch.length - 1}) after retries: ${detail}. ${renamed} chunks were already renamed before this failure.`);
+    }
+    renamed += updated.length;
+  }
+
+  return { renamed };
+}

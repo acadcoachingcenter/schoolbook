@@ -92,3 +92,15 @@
   color: var(--margin-red);
   border: 1px solid var(--margin-red-soft);
 }
+
+.admin-status--warning {
+  background: #faf3df;
+  color: #8a6d1a;
+  border: 1px solid #e6d29a;
+}
+
+.admin-section-title {
+  margin: 40px 0 8px;
+  font-size: 1.1rem;
+  color: var(--ink);
+}
