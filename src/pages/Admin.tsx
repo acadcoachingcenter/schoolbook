@@ -20,6 +20,8 @@ export function Admin() {
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [cooldown, setCooldown] = useState(0);
+  const [indexingStartedAt, setIndexingStartedAt] = useState<number | null>(null);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -27,11 +29,25 @@ export function Admin() {
     return () => clearInterval(timer);
   }, [cooldown]);
 
+  // Live stopwatch while a PDF is actually being indexed — server-side chunking/embedding
+  // time varies a lot with file size, so a static "Indexing…" label gives no signal on
+  // whether a heavy chapter is progressing or stuck. Ticks off wall-clock time (not a
+  // naive counter) so it stays accurate even if the tab is backgrounded and throttled.
+  useEffect(() => {
+    if (status.kind !== "working" || indexingStartedAt === null) return;
+    const tick = () => setElapsedSeconds(Math.floor((Date.now() - indexingStartedAt) / 1000));
+    tick();
+    const timer = setInterval(tick, 500);
+    return () => clearInterval(timer);
+  }, [status.kind, indexingStartedAt]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!file || !className || !subjectName.trim() || !adminKey.trim() || cooldown > 0) return;
 
     sessionStorage.setItem(KEY_STORAGE, adminKey);
+    setElapsedSeconds(0);
+    setIndexingStartedAt(Date.now());
     setStatus({ kind: "working" });
 
     const form = new FormData();
@@ -63,8 +79,10 @@ export function Admin() {
       setFile(null);
       setChapterTitleOverride("");
       setCooldown(COOLDOWN_SECONDS);
+      setIndexingStartedAt(null);
     } catch (err) {
       setStatus({ kind: "error", message: (err as Error).message });
+      setIndexingStartedAt(null);
       // No cooldown on failure — a genuine mistake (bad file, wrong field) shouldn't force a wait to fix and retry.
     }
   }
@@ -148,7 +166,11 @@ export function Admin() {
           </label>
 
           <button type="submit" disabled={status.kind === "working" || cooldown > 0}>
-            {status.kind === "working" ? "Indexing…" : cooldown > 0 ? `Wait ${cooldown}s…` : "Upload and index"}
+            {status.kind === "working"
+              ? `Indexing… ${elapsedSeconds}s`
+              : cooldown > 0
+                ? `Wait ${cooldown}s…`
+                : "Upload and index"}
           </button>
         </form>
 
