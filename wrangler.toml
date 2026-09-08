@@ -3,6 +3,15 @@ compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "dist"
 
+# Default CPU time per request on Workers Paid is 30s — PDF parsing of graphic-heavy
+# chapters (full-color photos, gradients, vector decoration) can burn through that during
+# ingestion, killing the request mid-parse with no response ("Failed to fetch" in the browser).
+# Raised to the max allowed (5 minutes) so heavy chapters have real headroom. Requires the
+# Workers Paid subscription — on the unpaid Workers Free tier, CPU time is hard-capped at
+# 10ms and cannot be raised by this setting.
+[limits]
+cpu_ms = 300000
+
 [ai]
 binding = "AI"
 
