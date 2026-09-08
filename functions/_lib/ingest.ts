@@ -316,3 +316,72 @@ export async function renameChapterVectors(
 
   return { renamed };
 }
+
+const VECTORIZE_DIMENSIONS = 768; // must match `wrangler vectorize create --dimensions=768`
+const DELETE_QUERY_TOPK = 100; // Vectorize's max topK when returnMetadata/returnValues are both off
+
+/**
+ * Deletes every vector belonging to a chapter. Two strategies, tried in order:
+ *
+ * 1. Deterministic (preferred): same approach as renameChapterVectors — re-derive the
+ *    exact chunk IDs from the chapter's original PDF in R2, so deletion is complete and
+ *    can never touch another chapter's vectors.
+ * 2. Filtered-query fallback: used when the PDF isn't in R2 (e.g. a junk/orphaned entry
+ *    from a past bug, like a stale "untitled" chapter, whose PDF may never have been
+ *    saved). Queries Vectorize directly by (subject, chapter) metadata filter and deletes
+ *    whatever matches. This is capped at Vectorize's query limit (100 matches per call
+ *    with no pagination available), so `complete` comes back false if exactly that many
+ *    were found — a sign there may be more left behind that need a manual sweep from the
+ *    Cloudflare dashboard.
+ */
+export async function deleteChapterVectors(
+  env: Env & { SOURCE_PDFS?: R2Bucket },
+  subjectId: string,
+  chapterId: string
+): Promise<{ deleted: number; complete: boolean }> {
+  const object = env.SOURCE_PDFS ? await env.SOURCE_PDFS.get(`${subjectId}/${chapterId}.pdf`) : null;
+
+  let ids: string[];
+  if (object) {
+    const bytes = new Uint8Array(await object.arrayBuffer());
+    const pages = await extractPdfPages(bytes);
+    const chunks = chunkPages(pages);
+    ids = chunks.map((chunk, i) => `${subjectId}-${chapterId}-p${chunk.page}-${i}`);
+  } else {
+    // Fallback: no PDF backup to re-derive IDs from, so ask Vectorize directly for
+    // whatever matches this chapter's metadata. The query vector's actual values don't
+    // matter here (a zero vector is fine) — the filter does the real work. Metadata/values
+    // aren't requested (only `id` is needed), which keeps topK at its higher 100 ceiling
+    // instead of the lower cap that applies when metadata or values are returned.
+    const zeroVector = new Array(VECTORIZE_DIMENSIONS).fill(0);
+    const result = await withRetry(() =>
+      env.VECTORIZE.query(zeroVector, {
+        topK: DELETE_QUERY_TOPK,
+        filter: { subject: subjectId, chapter: chapterId }
+      })
+    );
+    ids = result.matches.map((m) => m.id);
+    if (ids.length === 0) return { deleted: 0, complete: true };
+
+    let deleted = 0;
+    for (let i = 0; i < ids.length; i += EMBED_BATCH_SIZE) {
+      const idBatch = ids.slice(i, i + EMBED_BATCH_SIZE);
+      await withRetry(() => env.VECTORIZE.deleteByIds(idBatch));
+      deleted += idBatch.length;
+    }
+    return { deleted, complete: ids.length < DELETE_QUERY_TOPK };
+  }
+
+  let deleted = 0;
+  for (let i = 0; i < ids.length; i += EMBED_BATCH_SIZE) {
+    const idBatch = ids.slice(i, i + EMBED_BATCH_SIZE);
+    try {
+      await withRetry(() => env.VECTORIZE.deleteByIds(idBatch));
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : String(err);
+      throw new Error(`Vectorize delete failed (ids ${i}-${i + idBatch.length - 1}) after retries: ${detail}. ${deleted} chunks were already deleted before this failure.`);
+    }
+    deleted += idBatch.length;
+  }
+  return { deleted, complete: true };
+}

@@ -19,6 +19,12 @@ type RenameStatus =
   | { kind: "done"; warning?: string }
   | { kind: "error"; message: string };
 
+type DeleteStatus =
+  | { kind: "idle" }
+  | { kind: "working" }
+  | { kind: "done"; warning?: string }
+  | { kind: "error"; message: string };
+
 export function Admin() {
   const [adminKey, setAdminKey] = useState(() => sessionStorage.getItem(KEY_STORAGE) ?? "");
   const [className, setClassName] = useState("");
@@ -35,6 +41,8 @@ export function Admin() {
   const [selectedChapterKey, setSelectedChapterKey] = useState("");
   const [renameTitle, setRenameTitle] = useState("");
   const [renameStatus, setRenameStatus] = useState<RenameStatus>({ kind: "idle" });
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [deleteStatus, setDeleteStatus] = useState<DeleteStatus>({ kind: "idle" });
 
   function loadChapters() {
     fetchAvailableChapters()
@@ -114,8 +122,41 @@ export function Admin() {
   function handleSelectChapter(key: string) {
     setSelectedChapterKey(key);
     setRenameStatus({ kind: "idle" });
+    setDeleteStatus({ kind: "idle" });
+    setConfirmingDelete(false);
     const found = chapters.find((c) => `${c.subjectId}::${c.chapterId}` === key);
     setRenameTitle(found?.chapterTitle ?? "");
+  }
+
+  async function handleDelete() {
+    const found = chapters.find((c) => `${c.subjectId}::${c.chapterId}` === selectedChapterKey);
+    if (!found || !adminKey.trim()) return;
+
+    if (!confirmingDelete) {
+      setConfirmingDelete(true);
+      return;
+    }
+
+    sessionStorage.setItem(KEY_STORAGE, adminKey);
+    setDeleteStatus({ kind: "working" });
+
+    try {
+      const res = await fetch("/api/admin/delete-chapter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Admin-Key": adminKey },
+        body: JSON.stringify({ subjectId: found.subjectId, chapterId: found.chapterId })
+      });
+      const data = (await res.json()) as { deleted?: number; warning?: string; error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Delete failed.");
+      setDeleteStatus({ kind: "done", warning: data.warning });
+      setSelectedChapterKey("");
+      setRenameTitle("");
+      loadChapters();
+    } catch (err) {
+      setDeleteStatus({ kind: "error", message: (err as Error).message });
+    } finally {
+      setConfirmingDelete(false);
+    }
   }
 
   async function handleRename(e: React.FormEvent) {
@@ -240,27 +281,28 @@ export function Admin() {
         )}
         {status.kind === "error" && <p className="admin-status admin-status--error">{status.message}</p>}
 
-        <h2 className="admin-section-title">Rename an existing chapter</h2>
+        <h2 className="admin-section-title">Manage an existing chapter</h2>
         <p className="admin-sub">
-          Fixes the title students see when picking a chapter, and the title shown in "Why am I seeing this
-          answer?" source citations. Doesn't touch the PDF, subtopics, or chunk data — just the display title.
+          Rename fixes the title students see when picking a chapter, and the title shown in "Why am I seeing this
+          answer?" source citations. Delete removes a chapter entirely — use it to clean up wrong or junk entries
+          (e.g. a stale "untitled" chapter). Both leave every other chapter untouched.
         </p>
 
-        <form onSubmit={handleRename} className="admin-form">
-          <label>
-            Chapter
-            <select value={selectedChapterKey} onChange={(e) => handleSelectChapter(e.target.value)} required>
-              <option value="" disabled>
-                {chapters.length === 0 ? "No chapters indexed yet" : "Select a chapter"}
+        <label className="admin-chapter-picker">
+          Chapter
+          <select value={selectedChapterKey} onChange={(e) => handleSelectChapter(e.target.value)}>
+            <option value="" disabled>
+              {chapters.length === 0 ? "No chapters indexed yet" : "Select a chapter"}
+            </option>
+            {chapters.map((c) => (
+              <option key={`${c.subjectId}::${c.chapterId}`} value={`${c.subjectId}::${c.chapterId}`}>
+                {c.className} · {c.subjectName} — {c.chapterTitle}
               </option>
-              {chapters.map((c) => (
-                <option key={`${c.subjectId}::${c.chapterId}`} value={`${c.subjectId}::${c.chapterId}`}>
-                  {c.className} · {c.subjectName} — {c.chapterTitle}
-                </option>
-              ))}
-            </select>
-          </label>
+            ))}
+          </select>
+        </label>
 
+        <form onSubmit={handleRename} className="admin-form">
           <label>
             New title
             <input
@@ -268,6 +310,7 @@ export function Admin() {
               value={renameTitle}
               onChange={(e) => setRenameTitle(e.target.value)}
               placeholder="Corrected chapter title"
+              disabled={!selectedChapterKey}
               required
             />
           </label>
@@ -284,6 +327,34 @@ export function Admin() {
           <p className="admin-status admin-status--warning">{renameStatus.warning}</p>
         )}
         {renameStatus.kind === "error" && <p className="admin-status admin-status--error">{renameStatus.message}</p>}
+
+        <div className="admin-danger-zone">
+          <button
+            type="button"
+            className="admin-delete-btn"
+            disabled={!selectedChapterKey || deleteStatus.kind === "working"}
+            onClick={handleDelete}
+          >
+            {deleteStatus.kind === "working"
+              ? "Deleting…"
+              : confirmingDelete
+                ? "Click again to confirm delete — this cannot be undone"
+                : "Delete this chapter"}
+          </button>
+          {confirmingDelete && (
+            <button type="button" className="admin-delete-cancel" onClick={() => setConfirmingDelete(false)}>
+              Cancel
+            </button>
+          )}
+        </div>
+
+        {deleteStatus.kind === "done" && !deleteStatus.warning && (
+          <p className="admin-status admin-status--ok">Chapter deleted everywhere.</p>
+        )}
+        {deleteStatus.kind === "done" && deleteStatus.warning && (
+          <p className="admin-status admin-status--warning">{deleteStatus.warning}</p>
+        )}
+        {deleteStatus.kind === "error" && <p className="admin-status admin-status--error">{deleteStatus.message}</p>}
       </div>
     </div>
   );

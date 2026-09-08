@@ -63,3 +63,22 @@ export async function renameAvailableChapter(
     return false;
   }
 }
+
+/**
+ * Removes a chapter's entry entirely — used to clean up bad/junk entries (e.g. a
+ * stale "untitled" chapter left over from a past ingest bug) so it stops appearing
+ * in the student-facing Chapter Explorer. Returns false if no matching entry existed.
+ */
+export async function deleteAvailableChapter(env: Env, subjectId: string, chapterId: string): Promise<boolean> {
+  if (!env.CACHE) return false;
+  try {
+    const current = await getAvailableChapters(env);
+    const next = current.filter((c) => !(c.subjectId === subjectId && c.chapterId === chapterId));
+    if (next.length === current.length) return false; // nothing matched
+    await env.CACHE.put(REGISTRY_KEY, JSON.stringify(next));
+    return true;
+  } catch (err) {
+    console.error("deleteAvailableChapter failed:", err);
+    return false;
+  }
+}
