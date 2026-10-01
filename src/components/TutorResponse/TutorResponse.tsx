@@ -6,6 +6,7 @@ import { AlertCircle, BookOpenCheck, RotateCcw } from "lucide-react";
 import "./TutorResponse.css";
 import { SourceCard } from "../SourceCard/SourceCard";
 import type { RetrievedSource } from "../../types";
+import { normalizeMathDelimiters } from "../../lib/math";
 
 export interface TurnState {
   question: string;
@@ -33,7 +34,7 @@ export function TutorResponse({ turn, onRetry }: { turn: TurnState; onRetry: () 
       ) : (
         <div className={`turn-answer ${turn.status === "streaming" ? "turn-answer--streaming" : ""}`}>
           <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-            {turn.answer || " "}
+            {normalizeMathDelimiters(turn.answer) || " "}
           </ReactMarkdown>
           {turn.status === "streaming" && <span className="caret" aria-hidden="true" />}
         </div>
