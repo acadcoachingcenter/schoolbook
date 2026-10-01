@@ -2,6 +2,7 @@ import type { Env } from "../_lib/env";
 import { jsonResponse, errorResponse, validateQuestion, corsHeaders } from "../_lib/env";
 import { retrieveContext, generateAnswerStream } from "../_lib/rag";
 import { getRecentHistory, appendTurn, isValidSessionId } from "../_lib/memory";
+import { MathDelimiterStream } from "../_lib/mathDelims";
 import type { AskRequest } from "../../src/types";
 
 export const onRequestOptions: PagesFunction<Env> = async ({ request }) => {
@@ -88,6 +89,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
     async start(controller) {
       let buffer = "";
       let fullAnswer = "";
+      const math = new MathDelimiterStream();
       try {
         while (true) {
           const { done, value } = await reader.read();
@@ -104,7 +106,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
 
             try {
               const parsed = JSON.parse(data);
-              const token = parsed.choices?.[0]?.delta?.content;
+              const raw = parsed.choices?.[0]?.delta?.content;
+              const token = raw ? math.push(raw) : "";
               if (token) {
                 fullAnswer += token;
                 controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "token", value: token })}\n\n`));
@@ -115,6 +118,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
           }
         }
 
+        const tail = math.flush();
+        if (tail) {
+          fullAnswer += tail;
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "token", value: tail })}\n\n`));
+        }
         controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "meta", sources })}\n\n`));
         controller.enqueue(encoder.encode("data: [DONE]\n\n"));
 

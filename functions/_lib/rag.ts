@@ -2,6 +2,7 @@ import type { Env } from "./env";
 import type { AskRequest, RetrievedSource } from "../../src/types";
 import { buildSystemPrompt, buildUserPrompt, summarizeConversation } from "./prompt";
 import { lookupProblemSource, parseProblemReference } from "./exercises";
+import { normalizeMathText } from "./mathDelims";
 
 export const EMBEDDING_MODEL = "@cf/baai/bge-base-en-v1.5"; // 768-dim, matches wrangler vectorize create
 const TOP_K = 6;
@@ -150,7 +151,7 @@ export async function generateAnswer(
   }
 
   const data = (await res.json()) as { choices: { message: { content: string } }[] };
-  return data.choices[0]?.message?.content ?? "";
+  return normalizeMathText(data.choices[0]?.message?.content ?? "");
 }
 
 /** Streaming generation — used by /api/stream. Returns the raw upstream Groq stream Response. */
