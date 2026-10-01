@@ -3,6 +3,7 @@ import { extractPdfPages, chunkPages, embedAndUpsertChunks, slug } from "../../_
 import { detectChapterInfo } from "../../_lib/detect";
 import { upsertAvailableChapter } from "../../_lib/availability";
 import { requireAdminKey, type AdminEnv } from "../../_lib/adminAuth";
+import { parseChapterExercises, cacheChapterExercises } from "../../_lib/exercises";
 
 interface IngestEnv extends AdminEnv {
   SOURCE_PDFS?: R2Bucket;
@@ -57,10 +58,20 @@ export const onRequestPost: PagesFunction<IngestEnv> = async ({ request, env }) 
       typeof bookOverride === "string" && bookOverride.trim() ? bookOverride.trim() : `NCERT ${className} ${subjectName}`;
 
     // Best-effort: keep the original PDF in R2 for audit/re-processing. Never block ingestion on this.
+    // Awaited (previously fire-and-forget): an un-awaited put can be cut off when the
+    // request finishes, leaving no PDF for rename/delete/exercise lookup.
     if (env.SOURCE_PDFS) {
       const key = `${subjectId}/${chapterId}.pdf`;
-      env.SOURCE_PDFS.put(key, bytes).catch((err) => console.error("R2 store failed:", err));
+      try {
+        await env.SOURCE_PDFS.put(key, bytes);
+      } catch (err) {
+        console.error("R2 store failed:", err);
+      }
     }
+
+    // Parse numbered exercises + worked examples so "solve exercise 2.3" can be answered.
+    const exercises = parseChapterExercises(pages);
+    await cacheChapterExercises(env, subjectId, chapterId, exercises);
 
     const chunks = chunkPages(pages);
     if (chunks.length === 0) {
@@ -90,7 +101,7 @@ export const onRequestPost: PagesFunction<IngestEnv> = async ({ request, env }) 
     });
 
     return jsonResponse(
-      { subjectId, chapterId, chapterTitle, subtopics: detected.subtopics, book, chunks: count },
+      { subjectId, chapterId, chapterTitle, subtopics: detected.subtopics, book, chunks: count, exercisesFound: exercises.items.length, examplesFound: exercises.examples.length },
       { status: 200 },
       origin
     );

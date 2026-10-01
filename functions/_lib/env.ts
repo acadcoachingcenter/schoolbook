@@ -4,6 +4,8 @@ export interface Env {
   VECTORIZE: VectorizeIndex;
   DB: D1Database;
   CACHE: KVNamespace;
+  /** Original chapter PDFs — used to re-derive exercise text for chapters ingested before exercise caching. */
+  SOURCE_PDFS?: R2Bucket;
   GROQ_API_KEY: string;
   GROQ_MODEL: string;
 }
